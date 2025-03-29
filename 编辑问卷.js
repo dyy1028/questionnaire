@@ -1,4 +1,3 @@
-
 const inputBox = document.querySelector('.tittle');
 
 // 点击事件  
@@ -32,7 +31,6 @@ saveButton.addEventListener('click', saveQuestionnaire);
 publishButton.addEventListener('click', publishQuestionaire);
 
 
-
 let TiHao = 0; //记录题号
 //当单选题按钮被点击
 const containBox = document.querySelector('.contain');
@@ -55,7 +53,7 @@ SingleButton.addEventListener('click', function () {
     const tittle = document.createElement('div');
     tittle.className = 'Question';
 
-    tittle.innerText = TiHao + '.';
+    tittle.innerText = (document.querySelectorAll('.AllQuest').length + 1) + '.';
     tittle.appendChild(input);
 
     // 创建添加选项按钮
@@ -65,7 +63,6 @@ SingleButton.addEventListener('click', function () {
     tittle.appendChild(add);
     newQuest.appendChild(tittle);
     containBox.appendChild(newQuest);
-
 
 
     // 为当前题目下的添加选项按钮添加点击事件监听器，点击时调用addOption函数添加选项
@@ -81,7 +78,7 @@ SingleButton.addEventListener('click', function () {
     const upMove = document.createElement('button');
     upMove.textContent = '上移';
     upMove.className = 'up';
-    if (TiHao === 1) {
+    if (document.querySelectorAll('.AllQuest').length === 1) {
         upMove.disabled = true;
     }
 
@@ -111,23 +108,22 @@ SingleButton.addEventListener('click', function () {
             if (prevQuestion.querySelector('.up')) {
                 prevQuestion.querySelector('.up').disabled = false;
             }
-            if (TiHao === 1) {
-                upMove.disabled = true;
-            }
-
-
+            reNumberQuestions();
         }
     });
 
     // 为下移按钮添加点击事件
     downMove.addEventListener('click', function () {
         const nextQuestion = newQuest.nextElementSibling;
-        // 创建临时存储盒子的位置  
-        const temp = document.createElement('div');
-        containBox.insertBefore(temp, nextQuestion);
-        containBox.insertBefore(nextQuestion, newQuest);
-        containBox.insertBefore(newQuest, temp);
-        containBox.removeChild(temp);
+        if (nextQuestion) {
+            // 创建临时存储盒子的位置  
+            const temp = document.createElement('div');
+            containBox.insertBefore(temp, nextQuestion);
+            containBox.insertBefore(nextQuestion, newQuest);
+            containBox.insertBefore(newQuest, temp);
+            containBox.removeChild(temp);
+            reNumberQuestions();
+        }
     });
 
     // 为复用按钮添加点击事件
@@ -135,8 +131,7 @@ SingleButton.addEventListener('click', function () {
         const clonedQuest = newQuest.cloneNode(true);
         containBox.insertBefore(clonedQuest, newQuest.nextElementSibling);
         // 更新新复制问题的题号
-        const newTiHao = parseInt(clonedQuest.querySelector('.Question').innerText.split('.')[0]);
-        clonedQuest.querySelector('.Question').innerText = (newTiHao + 1) + '.';
+        reNumberQuestions();
         // 重新绑定新复制问题的按钮事件
         const newUpMove = clonedQuest.querySelector('.up');
         const newDownMove = clonedQuest.querySelector('.down');
@@ -151,41 +146,42 @@ SingleButton.addEventListener('click', function () {
                 if (prevQuestion.querySelector('.up')) {
                     prevQuestion.querySelector('.up').disabled = false;
                 }
-                if (newTiHao === 1) {
-                    newUpMove.disabled = true;
-                }
+                reNumberQuestions();
             }
         });
 
         // 为下移按钮添加点击事件
-        downMove.addEventListener('click', function () {
-            const nextQuestion = newQuest.nextElementSibling;
-            // 创建临时存储盒子的位置  
-            const temp = document.createElement('div');
-            containBox.insertBefore(temp, nextQuestion);
-            containBox.insertBefore(nextQuestion, newQuest);
-            containBox.insertBefore(newQuest, temp);
-            containBox.removeChild(temp);
+        newDownMove.addEventListener('click', function () {
+            const nextQuestion = clonedQuest.nextElementSibling;
+            if (nextQuestion) {
+                // 创建临时存储盒子的位置  
+                const temp = document.createElement('div');
+                containBox.insertBefore(temp, nextQuestion);
+                containBox.insertBefore(nextQuestion, clonedQuest);
+                containBox.insertBefore(clonedQuest, temp);
+                containBox.removeChild(temp);
+                reNumberQuestions();
+            }
         });
 
         // 复用按钮事件
         newReuse.addEventListener('click', function () {
             const clonedQuest2 = clonedQuest.cloneNode(true);
             containBox.insertBefore(clonedQuest2, clonedQuest.nextElementSibling);
-            // 更新新复制问题的题号
-            const newTiHao2 = parseInt(clonedQuest2.querySelector('.Question').innerText.split('.')[0]);
-            clonedQuest2.querySelector('.Question').innerText = (newTiHao2 + 1) + '.';
+            reNumberQuestions();
         });
 
         // 删除按钮事件
         newDelete.addEventListener('click', function () {
             clonedQuest.remove();
+            reNumberQuestions();
         });
     });
 
     // 为删除按钮添加点击事件
     deleteButton.addEventListener('click', function () {
         newQuest.remove();
+        reNumberQuestions();
     });
 });
 
@@ -232,7 +228,6 @@ function addOption1(questionDiv, ButtonDiv) {
 const DuoButton = document.querySelector('.Duoxuan');
 DuoButton.addEventListener('click', function () {
     TiHao++;
-    lastNum = TiHao;
     const newQuest = document.createElement('div');
     newQuest.className = 'AllQuest';
 
@@ -247,7 +242,7 @@ DuoButton.addEventListener('click', function () {
     const tittle = document.createElement('div');
     tittle.className = 'Question';
 
-    tittle.innerText = TiHao + '.';
+    tittle.innerText = (document.querySelectorAll('.AllQuest').length + 1) + '.';
     tittle.appendChild(input);
 
     // 创建按钮  
@@ -271,7 +266,7 @@ DuoButton.addEventListener('click', function () {
     const upMove = document.createElement('button');
     upMove.textContent = '上移';
     upMove.className = 'up';
-    if (TiHao === 1) {
+    if (document.querySelectorAll('.AllQuest').length === 1) {
         upMove.disabled = true;
     }
 
@@ -301,23 +296,22 @@ DuoButton.addEventListener('click', function () {
             if (prevQuestion.querySelector('.up')) {
                 prevQuestion.querySelector('.up').disabled = false;
             }
-            if (TiHao === 1) {
-                upMove.disabled = true;
-            }
-
-
+            reNumberQuestions();
         }
     });
 
     // 为下移按钮添加点击事件
     downMove.addEventListener('click', function () {
         const nextQuestion = newQuest.nextElementSibling;
-        // 创建临时存储盒子的位置  
-        const temp = document.createElement('div');
-        containBox.insertBefore(temp, nextQuestion);
-        containBox.insertBefore(nextQuestion, newQuest);
-        containBox.insertBefore(newQuest, temp);
-        containBox.removeChild(temp);
+        if (nextQuestion) {
+            // 创建临时存储盒子的位置  
+            const temp = document.createElement('div');
+            containBox.insertBefore(temp, nextQuestion);
+            containBox.insertBefore(nextQuestion, newQuest);
+            containBox.insertBefore(newQuest, temp);
+            containBox.removeChild(temp);
+            reNumberQuestions();
+        }
     });
 
     // 为复用按钮添加点击事件
@@ -325,8 +319,7 @@ DuoButton.addEventListener('click', function () {
         const clonedQuest = newQuest.cloneNode(true);
         containBox.insertBefore(clonedQuest, newQuest.nextElementSibling);
         // 更新新复制问题的题号
-        const newTiHao = parseInt(clonedQuest.querySelector('.Question').innerText.split('.')[0]);
-        clonedQuest.querySelector('.Question').innerText = (newTiHao + 1) + '.';
+        reNumberQuestions();
         // 重新绑定新复制问题的按钮事件
         const newUpMove = clonedQuest.querySelector('.up');
         const newDownMove = clonedQuest.querySelector('.down');
@@ -341,41 +334,42 @@ DuoButton.addEventListener('click', function () {
                 if (prevQuestion.querySelector('.up')) {
                     prevQuestion.querySelector('.up').disabled = false;
                 }
-                if (newTiHao === 1) {
-                    newUpMove.disabled = true;
-                }
+                reNumberQuestions();
             }
         });
 
         // 为下移按钮添加点击事件
-        downMove.addEventListener('click', function () {
-            const nextQuestion = newQuest.nextElementSibling;
-            // 创建临时存储盒子的位置  
-            const temp = document.createElement('div');
-            containBox.insertBefore(temp, nextQuestion);
-            containBox.insertBefore(nextQuestion, newQuest);
-            containBox.insertBefore(newQuest, temp);
-            containBox.removeChild(temp);
+        newDownMove.addEventListener('click', function () {
+            const nextQuestion = clonedQuest.nextElementSibling;
+            if (nextQuestion) {
+                // 创建临时存储盒子的位置  
+                const temp = document.createElement('div');
+                containBox.insertBefore(temp, nextQuestion);
+                containBox.insertBefore(nextQuestion, clonedQuest);
+                containBox.insertBefore(clonedQuest, temp);
+                containBox.removeChild(temp);
+                reNumberQuestions();
+            }
         });
 
         // 复用按钮事件
         newReuse.addEventListener('click', function () {
             const clonedQuest2 = clonedQuest.cloneNode(true);
             containBox.insertBefore(clonedQuest2, clonedQuest.nextElementSibling);
-            // 更新新复制问题的题号
-            const newTiHao2 = parseInt(clonedQuest2.querySelector('.Question').innerText.split('.')[0]);
-            clonedQuest2.querySelector('.Question').innerText = (newTiHao2 + 1) + '.';
+            reNumberQuestions();
         });
 
         // 删除按钮事件
         newDelete.addEventListener('click', function () {
             clonedQuest.remove();
+            reNumberQuestions();
         });
     });
 
     // 为删除按钮添加点击事件
     deleteButton.addEventListener('click', function () {
         newQuest.remove();
+        reNumberQuestions();
     });
 });
 
@@ -435,7 +429,7 @@ TxtButton.addEventListener('click', function () {
     const tittle = document.createElement('div');
     tittle.className = 'Question';
 
-    tittle.innerText = TiHao + '.';
+    tittle.innerText = (document.querySelectorAll('.AllQuest').length + 1) + '.';
     tittle.appendChild(input);
 
     const checkbox = document.createElement('div');
@@ -473,7 +467,7 @@ TxtButton.addEventListener('click', function () {
     const upMove = document.createElement('button');
     upMove.textContent = '上移';
     upMove.className = 'up';
-    if (TiHao === 1) {
+    if (document.querySelectorAll('.AllQuest').length === 1) {
         upMove.disabled = true;
     }
 
@@ -503,23 +497,22 @@ TxtButton.addEventListener('click', function () {
             if (prevQuestion.querySelector('.up')) {
                 prevQuestion.querySelector('.up').disabled = false;
             }
-            if (TiHao === 1) {
-                upMove.disabled = true;
-            }
-
-
+            reNumberQuestions();
         }
     });
 
     // 为下移按钮添加点击事件
     downMove.addEventListener('click', function () {
         const nextQuestion = newQuest.nextElementSibling;
-        // 创建临时存储盒子的位置  
-        const temp = document.createElement('div');
-        containBox.insertBefore(temp, nextQuestion);
-        containBox.insertBefore(nextQuestion, newQuest);
-        containBox.insertBefore(newQuest, temp);
-        containBox.removeChild(temp);
+        if (nextQuestion) {
+            // 创建临时存储盒子的位置  
+            const temp = document.createElement('div');
+            containBox.insertBefore(temp, nextQuestion);
+            containBox.insertBefore(nextQuestion, newQuest);
+            containBox.insertBefore(newQuest, temp);
+            containBox.removeChild(temp);
+            reNumberQuestions();
+        }
     });
 
     // 为复用按钮添加点击事件
@@ -527,8 +520,7 @@ TxtButton.addEventListener('click', function () {
         const clonedQuest = newQuest.cloneNode(true);
         containBox.insertBefore(clonedQuest, newQuest.nextElementSibling);
         // 更新新复制问题的题号
-        const newTiHao = parseInt(clonedQuest.querySelector('.Question').innerText.split('.')[0]);
-        clonedQuest.querySelector('.Question').innerText = (newTiHao + 1) + '.';
+        reNumberQuestions();
         // 重新绑定新复制问题的按钮事件
         const newUpMove = clonedQuest.querySelector('.up');
         const newDownMove = clonedQuest.querySelector('.down');
@@ -543,44 +535,44 @@ TxtButton.addEventListener('click', function () {
                 if (prevQuestion.querySelector('.up')) {
                     prevQuestion.querySelector('.up').disabled = false;
                 }
-                if (newTiHao === 1) {
-                    newUpMove.disabled = true;
-                }
+                reNumberQuestions();
             }
         });
 
         // 为下移按钮添加点击事件
-        downMove.addEventListener('click', function () {
-            const nextQuestion = newQuest.nextElementSibling;
-            // 创建临时存储盒子的位置  
-            const temp = document.createElement('div');
-            containBox.insertBefore(temp, nextQuestion);
-            containBox.insertBefore(nextQuestion, newQuest);
-            containBox.insertBefore(newQuest, temp);
-            containBox.removeChild(temp);
+        newDownMove.addEventListener('click', function () {
+            const nextQuestion = clonedQuest.nextElementSibling;
+            if (nextQuestion) {
+                // 创建临时存储盒子的位置  
+                const temp = document.createElement('div');
+                containBox.insertBefore(temp, nextQuestion);
+                containBox.insertBefore(nextQuestion, clonedQuest);
+                containBox.insertBefore(clonedQuest, temp);
+                containBox.removeChild(temp);
+                reNumberQuestions();
+            }
         });
 
         // 复用按钮事件
         newReuse.addEventListener('click', function () {
             const clonedQuest2 = clonedQuest.cloneNode(true);
             containBox.insertBefore(clonedQuest2, clonedQuest.nextElementSibling);
-            // 更新新复制问题的题号
-            const newTiHao2 = parseInt(clonedQuest2.querySelector('.Question').innerText.split('.')[0]);
-            clonedQuest2.querySelector('.Question').innerText = (newTiHao2 + 1) + '.';
+            reNumberQuestions();
         });
 
         // 删除按钮事件
         newDelete.addEventListener('click', function () {
             clonedQuest.remove();
+            reNumberQuestions();
         });
     });
 
     // 为删除按钮添加点击事件
     deleteButton.addEventListener('click', function () {
         newQuest.remove();
+        reNumberQuestions();
     });
 });
-
 
 
 //保存问卷
@@ -594,32 +586,32 @@ function saveQuestionnaire() {
         const questionType = newQuest.querySelector('.inputTiMu').id;
         const questionText = newQuest.querySelector('.inputTiMu').value;
 
-         // 为每个题目创建独立的选项数组，用于存储该题目的选项信息
-         let questionOptions = [];
-         if (questionType === "singleChoice" || questionType === "multipleChoice") {
-             const optionDivs2 = newQuest.querySelectorAll('.optionDiv');
-             optionDivs2.forEach((optionDiv) => {
-                 const optionText = optionDiv.querySelector('.optionInput').value;
-                 questionOptions.push({
-                     text: optionText
-                 });
-             });
-         }
-         //if(questionType === "inputText"){
-         else{
-             //获得此问题是否必答复选框状态
-         const mustAnswerCheckbox = document.querySelector('.checkbox_div input[type="checkbox"]');
-         const isMustAnswer = mustAnswerCheckbox.checked;
-             questionOptions.push({
-                 isMustAnswer: isMustAnswer
-             });
-         }
-         questions.push({
-             type: questionType,
-             questionText: questionText,
-             questionOptions
-         });
-         
+        // 为每个题目创建独立的选项数组，用于存储该题目的选项信息
+        let questionOptions = [];
+        if (questionType === "singleChoice" || questionType === "multipleChoice") {
+            const optionDivs2 = newQuest.querySelectorAll('.optionDiv');
+            optionDivs2.forEach((optionDiv) => {
+                const optionText = optionDiv.querySelector('.optionInput').value;
+                questionOptions.push({
+                    text: optionText
+                });
+            });
+        }
+        //if(questionType === "inputText"){
+        else {
+            //获得此问题是否必答复选框状态
+            const mustAnswerCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
+            const isMustAnswer = mustAnswerCheckbox? mustAnswerCheckbox.checked : false;
+            questionOptions.push({
+                isMustAnswer: isMustAnswer
+            });
+        }
+        questions.push({
+            type: questionType,
+            questionText: questionText,
+            questionOptions
+        });
+
     });
 
 
@@ -670,17 +662,16 @@ function publishQuestionaire() {
     const seconds = dateObj.getSeconds().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     const savedQuestionnaireData = localStorage.getItem(`${tittle}`);
-if (savedQuestionnaireData) {
-    // 将获取到的JSON字符串解析为JavaScript对象
-    const questionnaireObj = JSON.parse(savedQuestionnaireData);
-    // 添加发布时间和发布状态属性到原对象
-    questionnaireObj.publishTime = formattedDate;
-    questionnaireObj.publishStatus = "发布中";
-    localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireObj));
-    showCustomAlert('问卷已发布状态为“发布中”！');
+    if (savedQuestionnaireData) {
+        // 将获取到的JSON字符串解析为JavaScript对象
+        const questionnaireObj = JSON.parse(savedQuestionnaireData);
+        // 添加发布时间和发布状态属性到原对象
+        questionnaireObj.publishTime = formattedDate;
+        questionnaireObj.publishStatus = "发布中";
+        localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireObj));
+        showCustomAlert('问卷已发布状态为“发布中”！');
+    }
 }
-}
-
 
 
 //提示框
@@ -699,3 +690,14 @@ function showCustomAlert(message) {
     });
     Dialog.showModal();
 }
+
+// 新增重新编号函数
+function reNumberQuestions() {
+    const questions = document.querySelectorAll('.AllQuest');
+    questions.forEach((question, index) => {
+        const questionNumber = index + 1;
+        question.querySelector('.Question').textContent = `${questionNumber}.`;
+    });
+    TiHao = questions.length; // 更新全局变量
+}
+    
