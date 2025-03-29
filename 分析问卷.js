@@ -34,7 +34,7 @@ window.onload = function () {
                     question.questionOptions?.forEach((option) => {
                         questionDiv.innerHTML += `<p>${optionLetter}. ${option.text}</p>`;
                         optionLabels.push(optionLetter);
-                        optionCounts[optionLetter] = 0; // 初始化选项数量
+                        optionCounts[optionLetter] = 0; // 先初始化选项数量为 0
                         optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
                     });
                 }
@@ -45,7 +45,6 @@ window.onload = function () {
                 chartContainer.style.display = "flex";
                 chartContainer.style.justifyContent = "center";
                 chartContainer.style.alignItems = "center";
-                chartContainer.style.flexDirection = "column"; // **多选题要显示文本统计**
 
                 const canvas = document.createElement('canvas');
                 chartContainer.appendChild(canvas);
@@ -86,17 +85,9 @@ window.onload = function () {
                 let labels = optionLabels;
                 let dataValues = Object.values(optionCounts);
                 let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
-                let chartType = 'bar';
+                let chartType = question.type === 'multipleChoice' ? 'pie' : 'bar';
 
-                if (question.type === 'multipleChoice') {
-                    // **多选题不显示 Y 轴，在旁边显示各选项的数量**
-                    canvas.style.display = "none"; // **隐藏图表**
-                    let statText = document.createElement('div');
-                    statText.style.textAlign = "left";
-                    statText.style.fontSize = "16px";
-                    statText.innerHTML = labels.map(letter => `<p>${letter} 选项：${optionCounts[letter]} 次</p>`).join('');
-                    chartContainer.appendChild(statText);
-                } else if (question.type === 'inputText') {
+                if (question.type === 'inputText') {
                     let textCounts = { '已作答': 0, '未作答': 0 };
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
@@ -109,36 +100,35 @@ window.onload = function () {
                     labels = Object.keys(textCounts);
                     dataValues = Object.values(textCounts);
                     bgColor = ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'];
+                    chartType = 'bar';
                 }
 
-                if (question.type !== 'multipleChoice') {
-                    new Chart(ctx, {
-                        type: chartType,
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: '选择次数',
-                                data: dataValues,
-                                backgroundColor: bgColor,
-                            }],
-                        },
-                        options: {
-                            responsive: false,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        stepSize: 1,  // **Y 轴刻度强制为整数**
-                                        callback: function(value) {
-                                            return Number.isInteger(value) ? value : null;
-                                        }
+                new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '选择次数',
+                            data: dataValues,
+                            backgroundColor: bgColor,
+                        }],
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,  // **Y 轴刻度强制为整数**
+                                    callback: function(value) {
+                                        return Number.isInteger(value) ? value : null;
                                     }
                                 }
                             }
                         }
-                    });
-                }
+                    }
+                });
             });
         } else {
             console.log('未找到保存的问卷数据');
