@@ -409,7 +409,7 @@ function showCustomAlert(message) {
     OK1.addEventListener('click', () => {
         const successMessages = ['问卷已成功保存', '问卷已发布状态为“发布中”！'];
         if (successMessages.includes(Message.textContent.trim())) {
-            const homePageUrl = '首页.html'; // 请将 'index.html' 替换为实际的首页 URL
+            const homePageUrl = 'index.html'; // 请将 'index.html' 替换为实际的首页 URL
             window.location.href = homePageUrl;
         }
         Dialog.close();
