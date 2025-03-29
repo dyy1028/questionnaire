@@ -69,8 +69,9 @@ window.onload = function () {
                         if (userAnswer) {
                             if (question.type === 'multipleChoice') {
                                 userAnswer.split(',').forEach(char => {
-                                    if (optionCounts.hasOwnProperty(char)) {
-                                        optionCounts[char]++;
+                                    let trimmedChar = char.trim();
+                                    if (optionCounts.hasOwnProperty(trimmedChar)) {
+                                        optionCounts[trimmedChar]++;
                                     }
                                 });
                             } else {
@@ -83,8 +84,15 @@ window.onload = function () {
                 }
 
                 let labels = optionLabels;
-                let dataValues = Object.values(optionCounts);
-                let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
+                let dataValues = labels.map(option => optionCounts[option] || 0);
+                let bgColor = [
+                    'rgba(13, 22, 107, 0.5)',
+                    'rgba(73, 141, 187, 0.5)',
+                    'rgba(105, 66, 177, 0.5)',
+                    'rgba(123, 148, 39, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 99, 132, 0.5)'
+                ];
                 let chartType = question.type === 'multipleChoice' ? 'pie' : 'bar';
 
                 if (question.type === 'inputText') {
@@ -103,12 +111,12 @@ window.onload = function () {
                     chartType = 'bar';
                 }
 
+                // **渲染图表**
                 new Chart(ctx, {
                     type: chartType,
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: '选择次数',
                             data: dataValues,
                             backgroundColor: bgColor,
                         }],
@@ -116,19 +124,49 @@ window.onload = function () {
                     options: {
                         responsive: false,
                         maintainAspectRatio: false,
-                        scales: {
+                        plugins: {
+                            legend: { display: question.type === 'multipleChoice' }, // 只有多选题显示图例
+                            tooltip: { enabled: true },
+                        },
+                        scales: question.type === 'multipleChoice' ? {} : { // **多选题不显示坐标轴**
+                            x: { display: true },
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    stepSize: 1,  // **Y 轴刻度强制为整数**
+                                    stepSize: 1,
                                     callback: function(value) {
                                         return Number.isInteger(value) ? value : null;
                                     }
                                 }
                             }
+                        },
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true
                         }
                     }
                 });
+
+                // **在条形图的每个条柱上方标注选项次数**
+                if (question.type === 'singleChoice' || question.type === 'inputText') {
+                    setTimeout(() => {
+                        const chartInstance = Chart.getChart(canvas);
+                        const ctx = chartInstance.ctx;
+                        ctx.font = "14px Arial";
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+
+                        chartInstance.data.datasets[0].data.forEach((value, i) => {
+                            const meta = chartInstance.getDatasetMeta(0);
+                            if (meta.data[i]) {
+                                const bar = meta.data[i];
+                                const x = bar.x;
+                                const y = bar.y - 10;
+                                ctx.fillText(value, x, y);
+                            }
+                        });
+                    }, 500);
+                }
             });
         } else {
             console.log('未找到保存的问卷数据');
