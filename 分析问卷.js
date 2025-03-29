@@ -1,5 +1,6 @@
 window.onload = function () {
-    const t1 = localStorage.getItem("analyButton");
+    // 从 localStorage 中获取分析问卷的标题
+    const t1 = localStorage.getItem("analyTittle");
     if (t1) {
         const t2 = JSON.parse(t1);
         const historyAnswers = JSON.parse(localStorage.getItem('historyAnswers')) || [];
@@ -10,6 +11,7 @@ window.onload = function () {
             const title = questionnaireObj.tittle;
             const questions = questionnaireObj.questions;
 
+            // 设置问卷标题
             document.querySelector('.tittle').innerHTML = `<h2>${title}</h2>`;
             const questionContainer = document.querySelector('.question');
 
@@ -82,11 +84,11 @@ window.onload = function () {
 
                 if (question.type === 'multipleChoice') {
                     chartType = 'pie';
-                } else if (question.type === 'text') {
+                } else if (question.type === 'inputText') {
                     let textCounts = { '已作答': 0, '未作答': 0 };
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
-                        if (userAnswer && userAnswer !== '未作答') {
+                        if (userAnswer && userAnswer!== '未作答') {
                             textCounts['已作答']++;
                         } else {
                             textCounts['未作答']++;
@@ -117,4 +119,4 @@ window.onload = function () {
             console.log('未找到保存的问卷数据');
         }
     }
-};
+};    
