@@ -1,204 +1,213 @@
 /* 全局样式 */
 body {
-      margin: 0;
-      background-color: rgb(211, 211, 211);
-    }
-    
-    .header {
-      width: 100%;
-      height: 40px;
-      background-color: rgb(239, 164, 28);
-      display: flex;
-      align-items: center;
-    }
-    
-    .WenHao {
-      margin-top: 5px;
-      /*外边距离上边为30px */
-      margin-left: 50px;
-      /*外边距离左边为30px */
-      width: 30px;
-      /* 圆的宽度 */
-      height: 30px;
-      /* 圆的高度 */
-      background-color: white;
-      /* 圆的背景颜色 */
-      border-radius: 50%;
-      /* 圆角设置为50% */
-      display: flex;
-      /* 使用flexbox居中内容 */
-      align-items: center;
-      /* 垂直居中 */
-      justify-content: center;
-      /* 水平居中 */
-      font-size: 30px;
-      /* 问号的字体大小 */
-      color: rgb(239, 164, 28);
-      /* 问号的颜色 */
-      font-weight: bold;
-      /* 问号加粗 */
-    }
-    
-    a.WenJuan1 {
-      display: flex;
-      align-items: center;
-      /* 垂直居中 */
-      justify-content: center;
-      /* 水平居中 */
-      padding-left: 10px;
-      /* 左边距为10px */
-      padding-right: 20px;
-      /* 右边距为20px */
-      font-size: 20px;
-      /* 字体大小 */
-      color: white;
-      /* 颜色 */
-      font-weight: bold;
-      /* 加粗 */
-    }
-    
-    .My-Questionnaire {
-      display: flex;
-      align-items: center;
-      /* 垂直居中 */
-      justify-content: center;
-      /* 水平居中 */
-      font-size: 15px;
-      /* 字体大小 */
-      border: 2px solid rgb(236, 138, 35);
-      a{
-        color: white;
-        text-decoration: none;
-      }
-      height: 20px;
-    }
-    .kuang1 {
-       
-        margin-top: 50px;
-        margin-left: 4%;
-        width: 90%;
-        height: 150px;
-        background-color: #f2f2f2;
-        padding: 20px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        a{
-          color: white;
-          text-decoration: none;
-        }
-        
-    }
-    
-    
-    .new-button {
-        background-color: orange;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 18px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-
-      .liebiao {
-        display: flex;
-        align-items: center;
-        margin: 10px;
-        padding: 10px;
-        font-size: 20px; 
-        color: #00f;
-        a{
-          color: white;
-          text-decoration: none;
-        }
-        .button {
-          background-color: orange;
-          color: white;
-          border: none;
-          padding: 2px 2px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          margin: 2px 2px;
-          cursor: pointer;
-          border-radius: 4px;
-        }
-      }
-    
-      .title {
-        margin-right: 20px;
-        margin-left: 50px;
-      }
-    
-      .date {
-        margin-left: 20px;
-      }
-      .date1 {      
-        margin-left: 250px;
-      }
-    
-      .status {
-        margin-left: 20px;
-        margin-right:40px ;
-      }
-      .actions{
-        margin-right: 250px;
-      }
-      li{
-        background-color: white;
-        width: 92.5%;
-        margin-left: 10px;
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        height: 60px;
-       
-      }
-      .action-button {
-        padding: 5px 10px;
-        border: none;
-        background-color: #f0f0f0;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-   
-    #surveyTitle{
-      width: 400px;
-    }
-   .survey-publish-status{
-    margin-left: 200px;
-    width: 50px;
-   }
-   #surveyCreateTime{
-    width: 100px;
-    margin-left: 200px;
-   }
-
-   .kuang22{
-    margin-top: -15px;
-    background-color: white;
-    width: 90%;
-    margin-left: 50px;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    height: 60px;
-  }
-   #selectAll {
-    margin-top: 10px; /* 在全选按钮上方添加一些空间 */
+  margin: 0;
+  background-color: rgb(211, 211, 211);
 }
+
+/* 头部样式 */
+.header {
+  width: 100%;
+  height: 40px;
+  background-color: rgb(239, 164, 28);
+  display: flex;
+  align-items: center;
+}
+
+/* 问号样式 */
+.WenHao {
+  margin-top: 5px;
+  margin-left: 50px;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: rgb(239, 164, 28);
+  font-weight: bold;
+}
+
+/* 问卷管理样式 */
+a.WenJuan1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+  padding-right: 20px;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+/* 我的问卷样式 */
+.My-Questionnaire {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  border: 2px solid rgb(236, 138, 35);
+}
+
+.My-Questionnaire a {
+  color: white;
+  text-decoration: none;
+}
+
+/* 框 1 样式 */
+.kuang1 {
+  margin-top: 50px;
+  margin-left: 4%;
+  width: 90%;
+  height: 150px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kuang1 a {
+  color: white;
+  text-decoration: none;
+}
+
+/* 新按钮样式 */
+.new-button {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* 列表样式 */
+/* 列表样式 */
+.liebiao {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+  font-size: 20px;
+  color: #00f;
+  justify-content: space-between; /* 新增，使内部元素两端对齐 */
+}
+/* 无问卷时添加问卷按钮居中样式 */
+
+
+.liebiao a {
+  color: white;
+  text-decoration: none;
+}
+
+.liebiao .button {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 2px 2px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* 标题样式 */
+.title {
+  margin-right: 20px;
+  margin-left: 50px;
+}
+
+/* 日期样式 */
+.date {
+  margin-left: 20px;
+}
+
+.date1 {
+  margin-left: 250px;
+}
+
+/* 状态样式 */
+.status {
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+/* 操作区域样式 */
+.actions {
+  margin-right: 250px;
+}
+
+/* 列表项样式 */
+li {
+  background-color: white;
+  width: 92.5%;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 60px;
+}
+
+/* 操作按钮样式 */
+.action-button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* 问卷标题样式 */
+#surveyTitle {
+  width: 400px;
+}
+
+/* 问卷发布状态样式 */
+.survey-publish-status {
+  margin-left: 200px;
+  width: 50px;
+}
+
+/* 问卷创建时间样式 */
+#surveyCreateTime {
+  width: 100px;
+  margin-left: 200px;
+}
+
+/* 框 22 样式 */
+.kuang22 {
+  margin-top: -15px;
+  background-color: white;
+  width: 90%;
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 新增，使子元素水平居中 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 60px;
+}
+
+/* 全选样式 */
+#selectAll {
+  margin-top: 10px;
+}
+
+/* 问卷条目样式 */
 .survey-entry {
   display: flex;
   align-items: center;
@@ -208,34 +217,48 @@ body {
 .survey-entry .survey-checkbox {
   margin-right: 10px;
 }
-#deleteSurveyButton{
+
+/* 删除问卷按钮样式 */
+#deleteSurveyButton {
   margin-left: 20px;
 }
-.survey-create-time{
+
+/* 问卷创建时间样式 */
+.survey-create-time {
   width: 100px;
-    margin-left: -60px;
+  margin-left: -60px;
 }
-.survey-create-title{
+
+/* 问卷创建标题样式 */
+.survey-create-title {
   width: 400px;
 }
-.hover-effect:hover {
-  background-color: orange; /* 鼠标悬停时的背景颜色 */
-  color: white; /* 鼠标悬停时的文字颜色 */
- 
+
+/* 鼠标悬停效果 */
+.hover-effect:hover,
+.delete-survey-button:hover,
+.analy-questionnaire-button:hover,
+.creat-questionnaire-button:hover,
+.edit-questionnaire-button:hover,
+.publi-questionnaire-button:hover,
+.view-questionnaire-button:hover {
+  background-color: orange;
+  color: white;
   border-color: orange;
 }
-.delete-survey-button:hover{
-  background-color: orange; /* 鼠标悬停时的背景颜色 */
-  color: white; /* 鼠标悬停时的文字颜色 */
- 
-  border-color: orange;
-}
-.analy-questionnaire-button:hover ,.creat-questionnaire-button:hover,.edit-questionnaire-button:hover
-,.publi-questionnaire-button:hover,.view-questionnaire-button:hover{
-  background-color: orange; /* 鼠标悬停时的背景颜色 */
-  color: white; /* 鼠标悬停时的文字颜色 */
-  border-color: orange;
-}
-.publi-questionnaire-button{
+
+/* 发布问卷按钮样式 */
+.publi-questionnaire-button {
   margin-left: 80px;
+}
+#addQuestionnaireContainer2 button {
+  background-color: orange; /* 修改按钮背景颜色为番茄红 */
+  color: white; /* 修改按钮文字颜色为白色 */
+  padding: 15px 30px; /* 增大按钮内边距，使按钮变大 */
+  font-size: 20px; /* 增大按钮文字大小 */
+  border: none;
+}
+#addQuestionnaireContainer2 button a {
+  color: white; 
+  text-decoration: none; /* 去除链接下划线 */
 }
