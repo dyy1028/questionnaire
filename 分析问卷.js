@@ -47,23 +47,23 @@ window.onload = function () {
                 divider.style.margin = "15px 0";
                 questionContainer.appendChild(divider);
 
+                let chartType = 'bar';
                 let labels = [];
                 let dataValues = [];
                 let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
-                let chartType = 'bar';
 
                 if (question.type === 'singleChoice' || question.type === 'multipleChoice') {
                     let optionCounts = {};
                     let optionLetter = 'A';
 
-                    // **初始化所有选项，保证即使没被选中也出现在图表**
+                    // **初始化所有选项，确保即使未选中也会在图表显示**
                     question.questionOptions?.forEach((option) => {
                         optionCounts[optionLetter] = 0;
                         labels.push(optionLetter);  // **只显示选项字母**
                         optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
                     });
 
-                    // **统计用户答案**
+                    // **统计用户选择的答案**
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
                         if (userAnswer) {
@@ -115,7 +115,9 @@ window.onload = function () {
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                stepSize: 1  // **让刻度从 0 开始，并且按 1 递增**
+                                ticks: {
+                                    stepSize: 1  // **Y 轴刻度以 1 递增**
+                                }
                             }
                         }
                     }
