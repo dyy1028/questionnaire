@@ -185,6 +185,7 @@ function createFunctionButtons(buttonContainer, key) {
     buttonContainer.appendChild(createWriteButton);
 
     const analyButton = createButton("分析问卷", "analy-questionnaire-button");
+    // 减小分析按钮的右边距
     buttonContainer.appendChild(analyButton);
 
     const publiButton = createButton("发布问卷", "publi-questionnaire-button");
@@ -216,4 +217,4 @@ function createDeleteButton(buttonContainer, key) {
     });
     deleteButton.classList.add('hover-effect');
     buttonContainer.appendChild(deleteButton);
-}    
+}
