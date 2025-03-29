@@ -5,6 +5,7 @@ window.onload = function () {
     const selectAllCheckbox = document.getElementById('selectAllCheckbox');
     const selectAllText = document.querySelector('#selectAllText');  // 获取全选文字元素
     const deleteButton = document.querySelector('.delete-survey-button');
+    const addQuestionnaireContainer2 = document.getElementById('addQuestionnaireContainer2');
 
     // 过滤掉不需要处理的键
     const filteredKeys = localStorageKeys.filter(key => ![
@@ -39,6 +40,9 @@ window.onload = function () {
         selectAllCheckbox.style.display = 'none';
         selectAllText.style.display = 'none';
         deleteButton.style.display = 'none';
+        addQuestionnaireContainer2.style.display = 'block';
+    } else {
+        addQuestionnaireContainer2.style.display = 'none';
     }
 
     // 为各个操作按钮添加事件监听器
@@ -124,6 +128,7 @@ function setupDeleteButton() {
     const deleteButton = document.querySelector('.delete-survey-button');
     const selectItems = document.querySelectorAll('.survey-checkbox');
     const surveyContainer = document.querySelector('.survey-container');
+    const addQuestionnaireContainer2 = document.getElementById('addQuestionnaireContainer2');
 
     deleteButton.addEventListener('click', function () {
         const selectedItems = Array.from(selectItems).filter(item => item.checked).map(item => item.parentNode);
@@ -147,6 +152,9 @@ function setupDeleteButton() {
                 selectAllCheckbox.style.display = 'none';
                 selectAllText.style.display = 'none';
                 deleteButton.style.display = 'none';
+                addQuestionnaireContainer2.style.display = 'block';
+            } else {
+                addQuestionnaireContainer2.style.display = 'none';
             }
             if (surveyContainer && surveyContainer.children.length === 0) {
                 surveyContainer.remove();
@@ -208,4 +216,4 @@ function createDeleteButton(buttonContainer, key) {
     });
     deleteButton.classList.add('hover-effect');
     buttonContainer.appendChild(deleteButton);
-}
+}    
