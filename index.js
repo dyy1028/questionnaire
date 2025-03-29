@@ -2,26 +2,44 @@ window.onload = function () {
     // 获取 localStorage 中所有的键
     const localStorageKeys = Object.keys(localStorage);
     const listContainer = document.getElementById('mylist');
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const selectAllText = document.querySelector('#selectAllText');  // 获取全选文字元素
+    const deleteButton = document.querySelector('.delete-survey-button');
 
     // 过滤掉不需要处理的键
     const filteredKeys = localStorageKeys.filter(key => ![
-        "historyAnswers", "viewTittle", "publicTittle", "editTittle", "writeTittle", "analyTittle", "publish"
+        "analyButton", "editTittle", "historyAnswers", "publicTittle", "viewTittle", "writeButton", "writeTittle", "analyTittle", "editButton"
     ].includes(key));
+
+    let hasSurvey = false;  // 新增变量，用于标记是否有问卷
 
     // 遍历过滤后的键，生成问卷列表项
     filteredKeys.forEach(key => {
         const questionnaireData = localStorage.getItem(key);
         if (questionnaireData) {
-            try {
-                const parsedData = JSON.parse(questionnaireData);
-                // 创建问卷列表项
-                const surveyListItem = createSurveyListItem(parsedData);
-                listContainer.appendChild(surveyListItem);
-            } catch (e) {
-                console.error(`Error parsing data for key: ${key}. Invalid JSON format.`, e);
+            // 简单检查是否是有效的 JSON 格式开头结尾
+            if (questionnaireData.startsWith('{') && questionnaireData.endsWith('}')) {
+                try {
+                    const parsedData = JSON.parse(questionnaireData);
+                    // 创建问卷列表项
+                    const surveyListItem = createSurveyListItem(parsedData);
+                    listContainer.appendChild(surveyListItem);
+                    hasSurvey = true;  // 如果有问卷，标记为 true
+                } catch (e) {
+                    console.error(`Error parsing data for key: ${key}. Invalid JSON format.`, e);
+                }
+            } else {
+                console.error(`Data for key ${key} in localStorage is not a valid JSON string`);
             }
         }
     });
+
+    // 根据是否有问卷来决定是否显示全选按钮、全选文字和删除按钮
+    if (!hasSurvey) {
+        selectAllCheckbox.style.display = 'none';
+        selectAllText.style.display = 'none';
+        deleteButton.style.display = 'none';
+    }
 
     // 为各个操作按钮添加事件监听器
     setupButtonEvents();
@@ -120,6 +138,16 @@ function setupDeleteButton() {
                 localStorage.removeItem(key);
                 item.remove();
             });
+            // 删除操作后，再次检查问卷数量，更新按钮显示状态
+            const remainingItems = document.querySelectorAll('#mylist li');
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const selectAllText = document.querySelector('#selectAllText');
+            const deleteButton = document.querySelector('.delete-survey-button');
+            if (remainingItems.length === 0) {
+                selectAllCheckbox.style.display = 'none';
+                selectAllText.style.display = 'none';
+                deleteButton.style.display = 'none';
+            }
             if (surveyContainer && surveyContainer.children.length === 0) {
                 surveyContainer.remove();
             }
@@ -180,4 +208,4 @@ function createDeleteButton(buttonContainer, key) {
     });
     deleteButton.classList.add('hover-effect');
     buttonContainer.appendChild(deleteButton);
-}    
+}
