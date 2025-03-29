@@ -3,8 +3,8 @@ window.onload = function () {
     if (t1) {
         const t2 = JSON.parse(t1);
         const historyAnswers = JSON.parse(localStorage.getItem('historyAnswers')) || [];
-
         const savedQuestionnaireData = localStorage.getItem(t2);
+
         if (savedQuestionnaireData) {
             const questionnaireObj = JSON.parse(savedQuestionnaireData);
             const title = questionnaireObj.tittle;
@@ -14,21 +14,23 @@ window.onload = function () {
             const questionContainer = document.querySelector('.question');
 
             questions.forEach((question, index) => {
+                // 题目整体容器
                 const questionWrapper = document.createElement('div');
                 questionWrapper.classList.add('question-wrapper');
                 questionWrapper.style.display = "flex";
                 questionWrapper.style.alignItems = "center";
                 questionWrapper.style.justifyContent = "space-between";
-                questionWrapper.style.marginBottom = "20px";
+                questionWrapper.style.padding = "15px 0";
 
                 // 左侧题目部分
                 const questionDiv = document.createElement('div');
                 questionDiv.style.width = "50%";
-                questionDiv.innerHTML = `<p><strong>${index + 1}. ${question.questionText}</strong></p>`;
+                questionDiv.innerHTML = `<p style="font-weight: bold; font-size: 16px;">${index + 1}. ${question.questionText}</p>`;
 
+                // 添加选项（如果有）
                 if (question.type === 'singleChoice' || question.type === 'multipleChoice') {
                     let optionLetter = 'A';
-                    question.questionOptions.forEach(option => {
+                    question.questionOptions?.forEach((option) => {
                         questionDiv.innerHTML += `<p>${optionLetter}. ${option.text}</p>`;
                         optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
                     });
@@ -37,6 +39,10 @@ window.onload = function () {
                 // 右侧图表部分
                 const chartContainer = document.createElement('div');
                 chartContainer.style.width = "50%";
+                chartContainer.style.display = "flex";
+                chartContainer.style.justifyContent = "center";
+                chartContainer.style.alignItems = "center";
+
                 const canvas = document.createElement('canvas');
                 chartContainer.appendChild(canvas);
                 questionWrapper.appendChild(questionDiv);
@@ -47,72 +53,65 @@ window.onload = function () {
                 canvas.width = 300;
                 canvas.height = 250;
 
-                // 统计数据
+                // 添加分界线
+                const divider = document.createElement('hr');
+                divider.style.border = "1px solid #ddd";
+                divider.style.width = "100%";
+                divider.style.margin = "15px 0";
+                questionContainer.appendChild(divider);
+
+                // 统计答案数据
                 const optionCounts = {};
                 historyAnswers.forEach(answerSet => {
                     const userAnswer = answerSet[index + 1];
-
-                    if (question.type === 'multipleChoice' && userAnswer !== "未作答") {
-                        userAnswer.split(',').forEach(option => {
-                            optionCounts[option] = (optionCounts[option] || 0) + 1;
-                        });
-                    } else if (question.type === 'singleChoice') {
-                        optionCounts[userAnswer] = (optionCounts[userAnswer] || 0) + 1;
+                    if (userAnswer) {
+                        if (question.type === 'multipleChoice') {
+                            userAnswer.split(',').forEach(char => {
+                                optionCounts[char] = (optionCounts[char] || 0) + 1;
+                            });
+                        } else {
+                            optionCounts[userAnswer] = (optionCounts[userAnswer] || 0) + 1;
+                        }
                     }
                 });
 
-                // 生成图表
-                if (question.type === 'singleChoice' || question.type === 'multipleChoice') {
-                    new Chart(canvas, {
-                        type: question.type === 'singleChoice' ? 'bar' : 'pie',
-                        data: {
-                            labels: Object.keys(optionCounts),
-                            datasets: [{
-                                label: '选择次数',
-                                data: Object.values(optionCounts),
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.5)',
-                                    'rgba(54, 162, 235, 0.5)',
-                                    'rgba(255, 206, 86, 0.5)',
-                                    'rgba(75, 192, 192, 0.5)'
-                                ],
-                            }],
-                        },
-                        options: {
-                            responsive: false,
-                            maintainAspectRatio: false
-                        }
-                    });
-                }
+                let chartType = 'bar';
+                let labels = Object.keys(optionCounts);
+                let dataValues = Object.values(optionCounts);
+                let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
 
-                // 处理文本题
-                if (question.type === 'text') {
+                if (question.type === 'multipleChoice') {
+                    chartType = 'pie';
+                } else if (question.type === 'text') {
                     let textCounts = { '已作答': 0, '未作答': 0 };
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
-                        if (userAnswer && userAnswer !== "未作答") {
+                        if (userAnswer && userAnswer !== '未作答') {
                             textCounts['已作答']++;
                         } else {
                             textCounts['未作答']++;
                         }
                     });
-
-                    new Chart(canvas, {
-                        type: 'bar',
-                        data: {
-                            labels: Object.keys(textCounts),
-                            datasets: [{
-                                label: '回答情况',
-                                data: Object.values(textCounts),
-                                backgroundColor: ['rgba(75, 192, 192, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-                            }],
-                        },
-                        options: {
-                            responsive: false,
-                            maintainAspectRatio: false
-                        }
-                    });
+                    labels = Object.keys(textCounts);
+                    dataValues = Object.values(textCounts);
+                    bgColor = ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'];
                 }
+
+                new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '选择次数',
+                            data: dataValues,
+                            backgroundColor: bgColor,
+                        }],
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
             });
         } else {
             console.log('未找到保存的问卷数据');
