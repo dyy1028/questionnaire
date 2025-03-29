@@ -21,10 +21,25 @@ window.onload = function () {
                 questionWrapper.style.justifyContent = "space-between";
                 questionWrapper.style.padding = "15px 0";
 
+                // **左侧：题目 + 选项**
                 const questionDiv = document.createElement('div');
                 questionDiv.style.width = "50%";
                 questionDiv.innerHTML = `<p style="font-weight: bold; font-size: 16px;">${index + 1}. ${question.questionText}</p>`;
 
+                let optionLetter = 'A';
+                let optionLabels = [];
+                let optionCounts = {};
+
+                if (question.type === 'singleChoice' || question.type === 'multipleChoice') {
+                    question.questionOptions?.forEach((option) => {
+                        questionDiv.innerHTML += `<p>${optionLetter}. ${option.text}</p>`;
+                        optionLabels.push(optionLetter);
+                        optionCounts[optionLetter] = 0; // 先初始化选项数量为 0
+                        optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
+                    });
+                }
+
+                // **右侧：图表**
                 const chartContainer = document.createElement('div');
                 chartContainer.style.width = "50%";
                 chartContainer.style.display = "flex";
@@ -47,23 +62,8 @@ window.onload = function () {
                 divider.style.margin = "15px 0";
                 questionContainer.appendChild(divider);
 
-                let chartType = 'bar';
-                let labels = [];
-                let dataValues = [];
-                let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
-
+                // **统计答案数据**
                 if (question.type === 'singleChoice' || question.type === 'multipleChoice') {
-                    let optionCounts = {};
-                    let optionLetter = 'A';
-
-                    // **初始化所有选项，确保即使未选中也会在图表显示**
-                    question.questionOptions?.forEach((option) => {
-                        optionCounts[optionLetter] = 0;
-                        labels.push(optionLetter);  // **只显示选项字母**
-                        optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
-                    });
-
-                    // **统计用户选择的答案**
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
                         if (userAnswer) {
@@ -80,10 +80,14 @@ window.onload = function () {
                             }
                         }
                     });
+                }
 
-                    dataValues = Object.values(optionCounts);
-                    chartType = question.type === 'multipleChoice' ? 'pie' : 'bar';
-                } else if (question.type === 'inputText') {
+                let labels = optionLabels;
+                let dataValues = Object.values(optionCounts);
+                let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
+                let chartType = question.type === 'multipleChoice' ? 'pie' : 'bar';
+
+                if (question.type === 'inputText') {
                     let textCounts = { '已作答': 0, '未作答': 0 };
                     historyAnswers.forEach(answerSet => {
                         const userAnswer = answerSet[index + 1];
@@ -116,7 +120,10 @@ window.onload = function () {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    stepSize: 1  // **Y 轴刻度以 1 递增**
+                                    stepSize: 1,  // **Y 轴刻度强制为整数**
+                                    callback: function(value) {
+                                        return Number.isInteger(value) ? value : null;
+                                    }
                                 }
                             }
                         }
