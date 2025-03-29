@@ -1,0 +1,391 @@
+/* 全局样式 */
+body {
+    margin: 0;
+    background-color: rgb(211, 211, 211);
+    z-index: 100;
+}
+
+/* 网页头部 */
+.header {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(239, 164, 28);
+    display: flex;
+    align-items: center;
+}
+
+/* 问号 */
+.WenHao {
+    margin-top: 5px;
+    /*外边距离上边为30px */
+    margin-left: 50px;
+    /*外边距离左边为30px */
+    width: 30px;
+    /* 圆的宽度 */
+    height: 30px;
+    /* 圆的高度 */
+    background-color: white;
+    /* 圆的背景颜色 */
+    border-radius: 50%;
+    /* 圆角设置为50% */
+    display: flex;
+    /* 使用flexbox居中内容 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    font-size: 30px;
+    /* 问号的字体大小 */
+    color: rgb(239, 164, 28);
+    /* 问号的颜色 */
+    font-weight: bold;
+    /* 问号加粗 */
+}
+
+/* 问卷管理 */
+a.WenJuan1 {
+    display: flex;
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    padding-left: 10px;
+    /* 左边距为10px */
+    padding-right: 20px;
+    /* 右边距为20px */
+    font-size: 20px;
+    /* 字体大小 */
+    color: white;
+    /* 颜色 */
+    font-weight: bold;
+    /* 加粗 */
+}
+
+/* 我的问卷 */
+.My-Questionnaire {
+    display: flex;
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    font-size: 15px;
+    /* 字体大小 */
+    border: 2px solid rgb(236, 138, 35);
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    height: 20px;
+}
+
+/* 一整个白框 */
+.BaiKuang {
+    display: block;
+    background-color: white;
+    width: 90%;
+    margin-left: 50px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.311);
+}
+
+/* 问卷主题输入框 */
+.tittle {
+    width: 95%;
+    height: 50px;
+    background-color: rgb(208, 233, 204);
+    border: none;
+    text-align: center;
+    font-weight: bolder;
+    font-size: larger;
+    margin: 5px;
+}
+
+/* 添加问题的按钮 */
+.addQuest {
+    width: 95%;
+    height: 50px;
+    background-color: rgb(211, 211, 211);
+    text-align: center;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.addQuest:hover {
+    background-color: rgb(238, 164, 28);
+}
+
+
+/* 放置添加问题和选项框的盒子 */
+.QuestStyle {
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    width: 95%;
+    margin: 10px;
+    align-items: center;
+    justify-items: center;
+    border: 1px solid rgb(211, 211, 211);
+}
+
+/* 三个选项按钮 */
+.TiMu {
+    flex: 1;
+    align-items: center;
+    justify-items: center;
+
+    button {
+        width: 120px;
+        align-items: center;
+        justify-items: center;
+        cursor: pointer;
+    }
+
+    .Single {
+        margin-left: 60px;
+        margin-top: 10px;
+    }
+
+    .Duoxuan {
+        margin-left: 60px;
+        margin-top: 10px;
+    }
+
+    .Txt {
+        margin-left: 60px;
+        margin-top: 10px;
+
+    }
+
+    img {
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+    }
+}
+
+/* 添加问题的灰色框 */
+.addQuest2 {
+    flex: 1;
+    width: 100%;
+    background-color: rgb(211, 211, 211);
+    text-align: center;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: larger;
+    margin-bottom: 0;
+}
+
+/* 问卷截止日期 */
+.data {
+    display: flex;
+    margin: 20px;
+    width: 95%;
+    height: 100px;
+    border-top: 1px solid rgb(211, 211, 211);
+    align-items: center;
+    justify-items: center;
+
+    label {
+        margin-left: 50px;
+    }
+
+    input {
+        margin-left: 10px;
+    }
+
+    #saveButton {
+        margin-left: 400px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    #publishButton {
+        cursor: pointer;
+    }
+}
+
+/* 单选题目的盒子 */
+.AllQuest {
+    display: flex;
+    flex-direction: column;
+    width: 950px;
+    margin: 20px;
+}
+
+.AllQuest:hover {
+    background-color: rgb(249, 235, 215);
+}
+
+
+/* 题目问题输入框 */
+.inputTiMu {
+    width: 700px;
+    height: 25px;
+    margin-left: 5px;
+}
+
+
+/* 题号和输入框的盒子 */
+.Question {
+    display: flex;
+    width: 1000px;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* 添加选项按钮 */
+.addOption {
+    height: 20px;
+    width: 80px;
+    font-size: 10px;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+/* 装所有选项的盒子 */
+.optionDiv {
+    display: flex;
+    width: 800px;
+    height: 30px;
+    margin: 10px;
+    align-items: center;
+
+}
+
+.optionInput {
+    width: 500px;
+}
+
+/* 删除按钮 */
+.deleteButton {
+    height: 20px;
+    width: 50px;
+    margin-left: 30px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+/* 文本题的答案框 */
+.answerText {
+    margin: 10px;
+    width: 500px;
+    margin-left: 25px;
+}
+
+/* 是否为必答题的盒子 */
+.checkbox_div {
+    display: flex;
+    margin-left: 80px;
+}
+
+
+/* 上移、下移、复用、删除按钮 */
+.up {
+    border: none;
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bolder;
+    margin-left: 670px;
+}
+
+.down {
+    border: none;
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.reuse {
+    border: none;
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.delete {
+    border: none;
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+
+#custom-alert {
+    /* display: flex; */
+    width: 400px;
+    height: 150px;
+    position: fixed;
+    top: 25%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid gray;
+    padding: 0%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    text-align: center;
+    background-color: rgb(206, 234, 203);
+
+    #OK {
+        border-color: rgb(236, 138, 35);
+        background-color: rgb(238, 164, 28);
+        color: rgb(248, 235, 189);
+        width: 100px;
+        height: 30px;
+        font-size: 15px;
+        text-align: center;
+    }
+}
+
+.dialog1 {
+    height: 35px;
+    display: flex;
+    background-color: rgb(185, 210, 181);
+
+    h2 {
+        font-size: 15px;
+        margin-top: 8px;
+        margin-right: 230px;
+        margin-left: 10px;
+    }
+
+    button {
+        font-size: 15px;
+        margin-left: 80px;
+        margin-right: 5px;
+        background-color: rgba(0, 0, 0, 0);
+        /* border-color: rgb(161, 224, 169); */
+        border: none;
+    }
+
+
+
+}
+
+.ButtonDiv {
+    display: flex;
+    width: 800px;
+    height: 50px;
+}

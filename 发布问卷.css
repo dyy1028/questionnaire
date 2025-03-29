@@ -1,0 +1,230 @@
+.BaiKuang {
+    display: block;
+    background-color: white;
+    width: 90%;
+    margin-left: 50px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.311);
+}
+/* 全局样式 */
+body {
+    margin: 0;
+    background-color: rgb(211, 211, 211);
+    z-index: 100;
+}
+
+/* 网页头部 */
+.header {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(239, 164, 28);
+    display: flex;
+    align-items: center;
+}
+
+/* 问号 */
+.WenHao {
+    margin-top: 5px;
+    /*外边距离上边为30px */
+    margin-left: 50px;
+    /*外边距离左边为30px */
+    width: 30px;
+    /* 圆的宽度 */
+    height: 30px;
+    /* 圆的高度 */
+    background-color: white;
+    /* 圆的背景颜色 */
+    border-radius: 50%;
+    /* 圆角设置为50% */
+    display: flex;
+    /* 使用flexbox居中内容 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    font-size: 30px;
+    /* 问号的字体大小 */
+    color: rgb(239, 164, 28);
+    /* 问号的颜色 */
+    font-weight: bold;
+    /* 问号加粗 */
+}
+
+/* 问卷管理 */
+a.WenJuan1 {
+    display: flex;
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    padding-left: 10px;
+    /* 左边距为10px */
+    padding-right: 20px;
+    /* 右边距为20px */
+    font-size: 20px;
+    /* 字体大小 */
+    color: white;
+    /* 颜色 */
+    font-weight: bold;
+    /* 加粗 */
+}
+
+/* 我的问卷 */
+.My-Questionnaire {
+    display: flex;
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    font-size: 15px;
+    /* 字体大小 */
+    border: 2px solid rgb(236, 138, 35);
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    height: 20px;
+}
+
+/* 一整个白框 */
+.BaiKuang {
+    display: block;
+    background-color: white;
+    width: 90%;
+    margin-left: 50px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.311);
+}
+
+.tittle{
+    h2{
+        padding-top: 30px;
+    }
+    text-align: center;
+}
+.question{
+    margin-left: 50px;
+}
+
+button.circle-button {
+    margin-right: 5px;
+    border: 1px solid #2b2a2a; /* 设置边框为2px的黑色实线，形成空心效果 */
+    border-radius: 50%; /* 将按钮设置为圆形 */
+    width: 18px; /* 设置按钮宽度 */
+    height: 18px; /* 设置按钮高度 */
+    background-color: transparent; /* 设置背景透明，保持空心 */
+    appearance: none; /* 去除浏览器默认样式 */
+    -webkit-appearance: none; /* 兼容webkit内核浏览器 */
+    cursor: pointer; /* 鼠标悬停变为指针样式 */
+    vertical-align: middle; /* 垂直居中对齐，使按钮和文字看起来更协调 */
+}
+
+button.circle-button.selected {
+    background-color: black; /* 选中时的背景颜色 */
+}
+
+button.circle-button.single-choice {
+    /* 可以在这里添加针对单选空心圆按钮的特定样式，如果有需要的话 */
+    background-color: black; 
+    border: 1px solid #2b2a2a; /* 设置边框为2px的黑色实线，形成空心效果 */
+}
+
+
+.radio-option{
+    margin-left: 10px;
+    margin-bottom: 8px;
+    height: 15px;
+    width: 15px;
+    border-radius:50%;
+}
+
+.checkbox-option{
+    margin-left: 10px;
+    margin-bottom: 8px;
+    height: 15px;
+    width: 15px;
+}
+
+#custom-alert {
+    /* display: flex; */
+    width: 400px;
+    height: 150px;
+    position: fixed;
+    top: 25%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid gray;
+    padding: 0%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    text-align: center;
+    background-color: rgb(206, 234, 203);
+
+    #OK {
+        border-color: rgb(236, 138, 35);
+        background-color: rgb(238, 164, 28);
+        color: rgb(248, 235, 189);
+        width: 100px;
+        height: 30px;
+        font-size: 15px;
+        text-align: center;
+    }
+}
+
+.dialog1 {
+    height: 35px;
+    display: flex;
+    background-color: rgb(185, 210, 181);
+
+    h2 {
+        font-size: 15px;
+        margin-top: 8px;
+        margin-right: 230px;
+        margin-left: 10px;
+    }
+
+    button {
+        font-size: 15px;
+        margin-left: 80px;
+        margin-right: 5px;
+        background-color: rgba(0, 0, 0, 0);
+        /* border-color: rgb(161, 224, 169); */
+        border: none;
+    }
+
+
+
+}
+
+/* 问卷截止日期 */
+.data {
+    display: flex;
+    margin: 20px;
+    width: 95%;
+    height: 100px;
+    align-items: center;
+    justify-items: center;
+
+    label {
+        margin-left: 50px;
+    }
+
+    input {
+        margin-left: 10px;
+    }
+
+    #publishButton {
+        margin-left: 500px;
+        cursor: pointer;
+    }
+}
+
+

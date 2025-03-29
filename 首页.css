@@ -1,0 +1,241 @@
+/* 全局样式 */
+body {
+      margin: 0;
+      background-color: rgb(211, 211, 211);
+    }
+    
+    .header {
+      width: 100%;
+      height: 40px;
+      background-color: rgb(239, 164, 28);
+      display: flex;
+      align-items: center;
+    }
+    
+    .WenHao {
+      margin-top: 5px;
+      /*外边距离上边为30px */
+      margin-left: 50px;
+      /*外边距离左边为30px */
+      width: 30px;
+      /* 圆的宽度 */
+      height: 30px;
+      /* 圆的高度 */
+      background-color: white;
+      /* 圆的背景颜色 */
+      border-radius: 50%;
+      /* 圆角设置为50% */
+      display: flex;
+      /* 使用flexbox居中内容 */
+      align-items: center;
+      /* 垂直居中 */
+      justify-content: center;
+      /* 水平居中 */
+      font-size: 30px;
+      /* 问号的字体大小 */
+      color: rgb(239, 164, 28);
+      /* 问号的颜色 */
+      font-weight: bold;
+      /* 问号加粗 */
+    }
+    
+    a.WenJuan1 {
+      display: flex;
+      align-items: center;
+      /* 垂直居中 */
+      justify-content: center;
+      /* 水平居中 */
+      padding-left: 10px;
+      /* 左边距为10px */
+      padding-right: 20px;
+      /* 右边距为20px */
+      font-size: 20px;
+      /* 字体大小 */
+      color: white;
+      /* 颜色 */
+      font-weight: bold;
+      /* 加粗 */
+    }
+    
+    .My-Questionnaire {
+      display: flex;
+      align-items: center;
+      /* 垂直居中 */
+      justify-content: center;
+      /* 水平居中 */
+      font-size: 15px;
+      /* 字体大小 */
+      border: 2px solid rgb(236, 138, 35);
+      a{
+        color: white;
+        text-decoration: none;
+      }
+      height: 20px;
+    }
+    .kuang1 {
+       
+        margin-top: 50px;
+        margin-left: 4%;
+        width: 90%;
+        height: 150px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        a{
+          color: white;
+          text-decoration: none;
+        }
+        
+    }
+    
+    
+    .new-button {
+        background-color: orange;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .liebiao {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        padding: 10px;
+        font-size: 20px; 
+        color: #00f;
+        a{
+          color: white;
+          text-decoration: none;
+        }
+        .button {
+          background-color: orange;
+          color: white;
+          border: none;
+          padding: 2px 2px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 2px 2px;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+      }
+    
+      .title {
+        margin-right: 20px;
+        margin-left: 50px;
+      }
+    
+      .date {
+        margin-left: 20px;
+      }
+      .date1 {      
+        margin-left: 250px;
+      }
+    
+      .status {
+        margin-left: 20px;
+        margin-right:40px ;
+      }
+      .actions{
+        margin-right: 250px;
+      }
+      li{
+        background-color: white;
+        width: 92.5%;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        height: 60px;
+       
+      }
+      .action-button {
+        padding: 5px 10px;
+        border: none;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+   
+    #surveyTitle{
+      width: 400px;
+    }
+   .survey-publish-status{
+    margin-left: 200px;
+    width: 50px;
+   }
+   #surveyCreateTime{
+    width: 100px;
+    margin-left: 200px;
+   }
+
+   .kuang22{
+    margin-top: -15px;
+    background-color: white;
+    width: 90%;
+    margin-left: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 60px;
+  }
+   #selectAll {
+    margin-top: 10px; /* 在全选按钮上方添加一些空间 */
+}
+.survey-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.survey-entry .survey-checkbox {
+  margin-right: 10px;
+}
+#deleteSurveyButton{
+  margin-left: 20px;
+}
+.survey-create-time{
+  width: 100px;
+    margin-left: -60px;
+}
+.survey-create-title{
+  width: 400px;
+}
+.hover-effect:hover {
+  background-color: orange; /* 鼠标悬停时的背景颜色 */
+  color: white; /* 鼠标悬停时的文字颜色 */
+ 
+  border-color: orange;
+}
+.delete-survey-button:hover{
+  background-color: orange; /* 鼠标悬停时的背景颜色 */
+  color: white; /* 鼠标悬停时的文字颜色 */
+ 
+  border-color: orange;
+}
+.analy-questionnaire-button:hover ,.creat-questionnaire-button:hover,.edit-questionnaire-button:hover
+,.publi-questionnaire-button:hover,.view-questionnaire-button:hover{
+  background-color: orange; /* 鼠标悬停时的背景颜色 */
+  color: white; /* 鼠标悬停时的文字颜色 */
+  border-color: orange;
+}
+.publi-questionnaire-button{
+  margin-left: 80px;
+}

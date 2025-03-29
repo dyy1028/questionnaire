@@ -1,0 +1,146 @@
+.BaiKuang {
+    display: block;
+    background-color: white;
+    width: 90%;
+    margin-left: 50px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.311);
+  }
+  
+  /* 页面整体背景颜色等设置 */
+  body {
+    margin: 0;
+    background-color: rgb(211, 211, 211);
+    z-index: 100;
+  }
+  
+  /* 头部样式 */
+  .header {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(239, 164, 28);
+    display: flex;
+    align-items: center;
+  }
+  
+  /* 问号样式 */
+  .WenHao {
+    margin-top: 5px;
+    /* 左边距 50px */
+    margin-left: 50px;
+    /* 宽度 30px */
+    width: 30px;
+    /* 高度 30px */
+    height: 30px;
+    /* 背景颜色白色 */
+    background-color: white;
+    /* 圆角 50% */
+    border-radius: 50%;
+    /* 启用 flexbox 布局 */
+    display: flex;
+    /* 垂直居中对齐 */
+    align-items: center;
+    /* 水平居中对齐 */
+    justify-content: center;
+    font-size: 30px;
+    /* 颜色为橙色 */
+    color: rgb(239, 164, 28);
+    /* 字体加粗 */
+    font-weight: bold;
+  }
+  
+  /* 问卷管理链接样式 */
+  a.WenJuan1 {
+    display: flex;
+    align-items: center;
+    /* 水平居中对齐 */
+    justify-content: center;
+    padding-left: 10px;
+    /* 左边内边距 10px */
+    padding-right: 20px;
+    /* 右边内边距 20px */
+    font-size: 20px;
+    /* 字体颜色白色 */
+    color: white;
+    /* 字体加粗 */
+    font-weight: bold;
+  }
+  
+  /* 我的问卷样式 */
+  .My-Questionnaire {
+    display: flex;
+    align-items: center;
+    /* 水平居中对齐 */
+    justify-content: center;
+    font-size: 15px;
+    /* 边框样式 */
+    border: 2px solid rgb(236, 138, 35);
+    a {
+      color: white;
+      text-decoration: none;
+    }
+    height: 20px;
+  }
+  
+  .tittle {
+    h2 {
+      padding-top: 30px;
+    }
+    text-align: center;
+  }
+  
+  .question {
+    margin-left: 50px;
+  }
+  
+  .return {
+    width: 80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 47%;
+  }
+  
+  .a1 {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+  
+  button.circle-button {
+    margin-right: 5px;
+    border: 1px solid #2b2a2a;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  
+  button.circle-button.selected {
+    background-color: black;
+  }
+  
+  button.circle-button.single-choice {
+    background-color: black;
+    border: 1px solid #2b2a2a;
+  }
+  
+  .radio-option {
+    margin-left: 10px;
+    margin-bottom: 8px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+  }
+  
+  .checkbox-option {
+    margin-left: 10px;
+    margin-bottom: 8px;
+    height: 15px;
+    width: 15px;
+  }
