@@ -59,7 +59,7 @@ window.onload = function () {
                     // **初始化所有选项，保证即使没被选中也出现在图表**
                     question.questionOptions?.forEach((option) => {
                         optionCounts[optionLetter] = 0;
-                        labels.push(optionLetter + ". " + option.text);
+                        labels.push(optionLetter);  // **只显示选项字母**
                         optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
                     });
 
