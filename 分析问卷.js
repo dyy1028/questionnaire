@@ -43,17 +43,11 @@ window.onload = function () {
                 const chartContainer = document.createElement('div');
                 chartContainer.style.width = "50%";
                 chartContainer.style.display = "flex";
-                chartContainer.style.flexDirection = "column"; // **多选题要显示文本统计**
+                chartContainer.style.justifyContent = "center";
                 chartContainer.style.alignItems = "center";
-
-                const legendContainer = document.createElement('div'); // **用于标注选项颜色和次数**
-                legendContainer.style.display = "flex";
-                legendContainer.style.flexWrap = "wrap";
-                legendContainer.style.justifyContent = "center";
-                legendContainer.style.marginBottom = "10px";
+                chartContainer.style.flexDirection = "column"; // **多选题要显示文本统计**
 
                 const canvas = document.createElement('canvas');
-                chartContainer.appendChild(legendContainer);
                 chartContainer.appendChild(canvas);
                 questionWrapper.appendChild(questionDiv);
                 questionWrapper.appendChild(chartContainer);
@@ -90,21 +84,18 @@ window.onload = function () {
                 }
 
                 let labels = optionLabels;
-                let dataValues = labels.map(letter => optionCounts[letter] || 0);
+                let dataValues = Object.values(optionCounts);
                 let bgColor = ['rgba(13, 22, 107, 0.5)', 'rgba(73, 141, 187, 0.5)', 'rgba(105, 66, 177, 0.5)', 'rgba(123, 148, 39, 0.5)'];
                 let chartType = 'bar';
 
                 if (question.type === 'multipleChoice') {
                     // **多选题不显示 Y 轴，在旁边显示各选项的数量**
                     canvas.style.display = "none"; // **隐藏图表**
-                    labels.forEach((letter, i) => {
-                        let optionItem = document.createElement('p');
-                        optionItem.style.color = bgColor[i];
-                        optionItem.style.fontSize = "16px";
-                        optionItem.style.margin = "0 10px";
-                        optionItem.innerHTML = `${letter} 选项：${optionCounts[letter]} 次`;
-                        legendContainer.appendChild(optionItem);
-                    });
+                    let statText = document.createElement('div');
+                    statText.style.textAlign = "left";
+                    statText.style.fontSize = "16px";
+                    statText.innerHTML = labels.map(letter => `<p>${letter} 选项：${optionCounts[letter]} 次</p>`).join('');
+                    chartContainer.appendChild(statText);
                 } else if (question.type === 'inputText') {
                     let textCounts = { '已作答': 0, '未作答': 0 };
                     historyAnswers.forEach(answerSet => {
@@ -121,15 +112,6 @@ window.onload = function () {
                 }
 
                 if (question.type !== 'multipleChoice') {
-                    labels.forEach((letter, i) => {
-                        let optionItem = document.createElement('p');
-                        optionItem.style.color = bgColor[i];
-                        optionItem.style.fontSize = "16px";
-                        optionItem.style.margin = "0 10px";
-                        optionItem.innerHTML = `${letter} 选项：${optionCounts[letter]} 次`;
-                        legendContainer.appendChild(optionItem);
-                    });
-
                     new Chart(ctx, {
                         type: chartType,
                         data: {
