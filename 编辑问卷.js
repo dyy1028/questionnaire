@@ -88,6 +88,8 @@ function createQuestion(tihao, questionType) {
     input.id = questionType;
     tittle.appendChild(input);
 
+    newQuest.appendChild(tittle);
+
     if (questionType!== 'inputText') {
         // 创建添加选项按钮
         const add = document.createElement('button');
@@ -113,7 +115,7 @@ function createQuestion(tihao, questionType) {
         });
         checkbox.appendChild(MustInput);
         checkbox.appendChild(label);
-        tittle.appendChild(checkbox);
+        newQuest.appendChild(checkbox);
 
         const answerText = document.createElement('input');
         answerText.type = 'text';
@@ -121,7 +123,6 @@ function createQuestion(tihao, questionType) {
         newQuest.appendChild(answerText);
     }
 
-    newQuest.appendChild(tittle);
     return newQuest;
 }
 
@@ -175,13 +176,59 @@ function setupQuestionButtons(questionDiv, tihao) {
 
     // 为复用按钮添加点击事件
     reuse.addEventListener('click', function () {
-        const clonedQuest = questionDiv.cloneNode(true);
         const newTiHao = getNextQuestionNumber();
-        clonedQuest.id = `question-${newTiHao}`;
-        const questionNumber = clonedQuest.querySelector('.question-number');
-        questionNumber.textContent = `${newTiHao}.`;
-        containBox.insertBefore(clonedQuest, questionDiv.nextElementSibling);
-        setupQuestionButtons(clonedQuest, newTiHao);
+        // 复制题目内容，不包含按钮
+        const newQuest = createQuestion(newTiHao, questionDiv.querySelector('.inputTiMu').id);
+        const originalInput = questionDiv.querySelector('.inputTiMu');
+        const newInput = newQuest.querySelector('.inputTiMu');
+        newInput.value = originalInput.value;
+
+        const originalOptions = questionDiv.querySelectorAll('.optionDiv');
+        const buttonDiv = newQuest.querySelector('.ButtonDiv');
+        originalOptions.forEach((originalOption, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'optionDiv';
+
+            const input = document.createElement('input');
+            input.type = originalOption.querySelector('input').type;
+            input.name = `option-${newQuest.id}`;
+            input.value = String.fromCharCode(index + 65);
+
+            const label = document.createElement('label');
+            label.textContent = String.fromCharCode(index + 65) + '.';
+
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.className = 'optionInput';
+            optionInput.value = originalOption.querySelector('.optionInput').value;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '删除';
+            deleteButton.className = 'deleteButton';
+
+            optionDiv.appendChild(input);
+            optionDiv.appendChild(label);
+            optionDiv.appendChild(optionInput);
+            optionDiv.appendChild(deleteButton);
+
+            newQuest.insertBefore(optionDiv, buttonDiv);
+
+            // 为当前题目下新添加的删除按钮添加点击事件监听器，点击时删除对应的选项盒子
+            deleteButton.addEventListener('click', function () {
+                const parentBox = this.parentNode;
+                parentBox.remove();
+            });
+        });
+
+        // 复制文本题必答状态
+        if (questionDiv.querySelector('.checkbox_div')) {
+            const originalCheckbox = questionDiv.querySelector('.checkbox_div input[type="checkbox"]');
+            const newCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
+            newCheckbox.checked = originalCheckbox.checked;
+        }
+
+        containBox.insertBefore(newQuest, questionDiv.nextElementSibling);
+        setupQuestionButtons(newQuest, newTiHao);
         updateQuestionNumbers();
     });
 
