@@ -124,6 +124,9 @@ function createQuestion(tihao, questionType) {
     // 创建题号和输入框的盒子
     const tittle = document.createElement('div');
     tittle.className = 'Question';
+    tittle.style.display = 'flex';
+    tittle.style.alignItems = 'center';
+
     tittle.innerHTML = `<span class="question-number">${tihao}.</span>`;
 
     // 创建文本框，用于输入题目
@@ -134,43 +137,36 @@ function createQuestion(tihao, questionType) {
     input.id = questionType;
     tittle.appendChild(input);
 
-    newQuest.appendChild(tittle);
+    if (questionType === 'inputText') {
+        // 此题是否必答
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.className = 'checkbox_div';
+        checkboxDiv.style.marginLeft = '10px'; // 右侧间距
 
-    if (questionType!== 'inputText') {
-        // 创建添加选项按钮
+        const MustInput = document.createElement('input');
+        MustInput.type = 'checkbox';
+        MustInput.id = `must-answer-${tihao}`;
+
+        const label = document.createElement('label');
+        label.textContent = '此题是否必答';
+        label.setAttribute('for', `must-answer-${tihao}`);
+
+        checkboxDiv.appendChild(MustInput);
+        checkboxDiv.appendChild(label);
+        tittle.appendChild(checkboxDiv);
+    } else {
+        // 仅非文本题（单选、多选）显示“添加选项”按钮
         const add = document.createElement('button');
         add.className = 'addOption';
         add.textContent = '添加选项';
         tittle.appendChild(add);
-    } else {
-        const checkbox = document.createElement('div');
-        checkbox.className = 'checkbox_div';
-
-        // 此题是否必答
-        const MustInput = document.createElement('input');
-        MustInput.type = 'checkbox';
-        const label = document.createElement('label');
-        label.textContent = '此题是否必答';
-        MustInput.addEventListener('change', function () {
-            const textInput = newQuest.querySelector('.answerText');
-            if (this.checked) {
-                textInput.required = true;
-            } else {
-                textInput.required = false;
-            }
-        });
-        checkbox.appendChild(MustInput);
-        checkbox.appendChild(label);
-        newQuest.appendChild(checkbox);
-
-        const answerText = document.createElement('input');
-        answerText.type = 'text';
-        answerText.className = 'answerText';
-        newQuest.appendChild(answerText);
     }
 
+    newQuest.appendChild(tittle);
     return newQuest;
 }
+
+
 
 function setupQuestionButtons(questionDiv, tihao) {
     // 创建上移、下移、复用、删除按钮
