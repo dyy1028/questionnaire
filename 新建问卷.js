@@ -1,137 +1,132 @@
+// 点击事件，改变标题输入框背景颜色
 const inputBox = document.querySelector('.tittle');
-
-// 点击事件  
 inputBox.addEventListener('click', function () {
-    // 改变背景颜色  
-    inputBox.style.backgroundColor = 'yellow'; // 可以根据需要选择其它颜色  
+    inputBox.style.backgroundColor = 'yellow';
+});
+inputBox.addEventListener('blur', function () {
+    inputBox.style.backgroundColor = 'rgb(208, 233, 204)';
 });
 
-// 可以选择在失去焦点时恢复背景颜色  
-inputBox.addEventListener('blur', function () {
-    inputBox.style.backgroundColor = 'rgb(208, 233, 204)'; // 恢复默认背景颜色  
-});
+// 添加问题按钮点击事件
 const addButton = document.querySelector('.addQuest');
 const QuestStyle = document.querySelector('.QuestStyle');
 addButton.addEventListener('click', function () {
-    //添加问题的按钮被点击时题目类型弹出来
     addButton.style.display = 'none';
     QuestStyle.style.display = 'flex';
 });
 
-
-//截止日期和发布按钮
+// 截止日期和发布按钮
 const deadlineInput = document.getElementById('deadline');
 const publishButton = document.getElementById('publishButton');
 const currentDate = new Date().toISOString().split('T')[0];
 deadlineInput.setAttribute('min', currentDate);
 
-//保存按钮
+// 保存按钮
 const saveButton = document.getElementById('saveButton');
 saveButton.addEventListener('click', saveQuestionnaire);
 publishButton.addEventListener('click', publishQuestionaire);
 
-
-let TiHao = 0; //记录题号
-//当单选题按钮被点击
-const containBox = document.querySelector('.contain');
+// 当单选题按钮被点击
 const SingleButton = document.querySelector('.Single');
-
-// 为添加单选题按钮添加点击事件监听器
 SingleButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion('singleChoice', '输入题目');
-    newQuest.id = TiHao;
+    const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+    const newQuest = createQuestion(TiHao, 'singleChoice');
     const add = newQuest.querySelector('.addOption');
     add.addEventListener('click', function () {
-        addOption(newQuest, false);
+        addOption(newQuest, 'radio');
     });
-    handleButtonEvents(newQuest);
+    setupQuestionButtons(newQuest, TiHao);
+    const containBox = document.querySelector('.contain');
     containBox.appendChild(newQuest);
 });
 
-//当多选题按钮被点击
+// 当多选题按钮被点击
 const DuoButton = document.querySelector('.Duoxuan');
 DuoButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion('multipleChoice', '输入题目');
+    const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+    const newQuest = createQuestion(TiHao, 'multipleChoice');
     const add = newQuest.querySelector('.addOption');
     add.addEventListener('click', function () {
-        addOption(newQuest, true);
+        addOption(newQuest, 'checkbox');
     });
-    handleButtonEvents(newQuest);
+    setupQuestionButtons(newQuest, TiHao);
+    const containBox = document.querySelector('.contain');
     containBox.appendChild(newQuest);
 });
 
-//当文本题按钮被点击
+// 当文本题按钮被点击
 const TxtButton = document.querySelector('.Txt');
 TxtButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion('inputText', '输入题目');
-
-    const checkbox = document.createElement('div');
-    checkbox.className = 'checkbox_div';
-
-    //此题是否必答
-    const MustInput = document.createElement('input');
-    MustInput.type = 'checkbox';
-    const label = document.createElement('label');
-    label.textContent = '此题是否必答'
-    const textInput = newQuest.querySelector('.inputTiMu');
-    MustInput.addEventListener('change', function () {
-        if (this.checked) {
-            textInput.required = true;
-        } else {
-            textInput.required = false;
-        }
-    });
-    checkbox.appendChild(MustInput);
-    checkbox.appendChild(label);
-    const tittle = newQuest.querySelector('.Question');
-    tittle.appendChild(checkbox);
-
-    const answerText = document.createElement('input');
-    answerText.type = 'text';
-    answerText.className = 'answerText';
-    newQuest.insertBefore(answerText, newQuest.querySelector('.ButtonDiv'));
-
-    handleButtonEvents(newQuest);
+    const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+    const newQuest = createQuestion(TiHao, 'inputText');
+    setupQuestionButtons(newQuest, TiHao);
+    const containBox = document.querySelector('.contain');
     containBox.appendChild(newQuest);
 });
 
-function createQuestion(type, placeholder) {
+
+function createQuestion(tihao, questionType) {
     const newQuest = document.createElement('div');
     newQuest.className = 'AllQuest';
+    newQuest.id = `question-${tihao}`;
 
-    // 创建文本框  
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = placeholder;
-    input.className = 'inputTiMu';
-    input.id = type;
-
-    //创建题号和输入框的盒子
+    // 创建题号和输入框的盒子
     const tittle = document.createElement('div');
     tittle.className = 'Question';
+    tittle.style.display = 'flex';
+    tittle.style.alignItems = 'center';
 
-    tittle.innerText = (document.querySelectorAll('.AllQuest').length + 1) + '.';
+    tittle.innerHTML = `<span class="question-number">${tihao}.</span>`;
+
+    // 创建文本框，用于输入题目
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = '输入题目';
+    input.className = 'inputTiMu';
+    input.id = questionType;
     tittle.appendChild(input);
 
-    // 创建按钮  
-    const add = document.createElement('button');
-    add.className = 'addOption';
-    add.textContent = '添加选项';
+    if (questionType === 'inputText') {
+        // 此题是否必答
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.className = 'checkbox_div';
+        checkboxDiv.style.marginLeft = '10px'; // 右侧间距
 
-    tittle.appendChild(add);
+        const MustInput = document.createElement('input');
+        MustInput.type = 'checkbox';
+        MustInput.id = `must-answer-${tihao}`;
+
+        const label = document.createElement('label');
+        label.textContent = '此题是否必答';
+        label.setAttribute('for', `must-answer-${tihao}`);
+
+        checkboxDiv.appendChild(MustInput);
+        checkboxDiv.appendChild(label);
+        tittle.appendChild(checkboxDiv);
+    }
+
     newQuest.appendChild(tittle);
 
-    //创建上移、下移、复用、删除按钮
+    if (questionType !== 'inputText') {
+        // 创建添加选项按钮
+        const add = document.createElement('button');
+        add.className = 'addOption';
+        add.textContent = '添加选项';
+        tittle.appendChild(add);
+    }
+
+    return newQuest;
+}
+
+function setupQuestionButtons(questionDiv, tihao) {
+    // 创建上移、下移、复用、删除按钮
     const ButtonDiv = document.createElement('div');
     ButtonDiv.className = 'ButtonDiv';
 
     const upMove = document.createElement('button');
     upMove.textContent = '上移';
     upMove.className = 'up';
-    if (document.querySelectorAll('.AllQuest').length === 1) {
+    if (tihao === 1) {
         upMove.disabled = true;
     }
 
@@ -151,28 +146,105 @@ function createQuestion(type, placeholder) {
     ButtonDiv.appendChild(downMove);
     ButtonDiv.appendChild(reuse);
     ButtonDiv.appendChild(deleteButton);
-    newQuest.appendChild(ButtonDiv);
+    questionDiv.appendChild(ButtonDiv);
 
-    return newQuest;
+    // 为上移按钮添加点击事件
+    upMove.addEventListener('click', function () {
+        const prevQuestion = questionDiv.previousElementSibling;
+        if (prevQuestion) {
+            const containBox = document.querySelector('.contain');
+            containBox.insertBefore(questionDiv, prevQuestion);
+            updateQuestionNumbers();
+        }
+    });
+
+    // 为下移按钮添加点击事件
+    downMove.addEventListener('click', function () {
+        const nextQuestion = questionDiv.nextElementSibling;
+        if (nextQuestion) {
+            const containBox = document.querySelector('.contain');
+            containBox.insertBefore(nextQuestion, questionDiv);
+            updateQuestionNumbers();
+        }
+    });
+
+    // 为复用按钮添加点击事件
+    reuse.addEventListener('click', function () {
+        const newTiHao = getNextQuestionNumber();
+        // 复制题目内容，不包含按钮
+        const newQuest = createQuestion(newTiHao, questionDiv.querySelector('.inputTiMu').id);
+        const originalInput = questionDiv.querySelector('.inputTiMu');
+        const newInput = newQuest.querySelector('.inputTiMu');
+        newInput.value = originalInput.value;
+
+        const originalOptions = questionDiv.querySelectorAll('.optionDiv');
+        const buttonDiv = newQuest.querySelector('.ButtonDiv');
+        originalOptions.forEach((originalOption, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'optionDiv';
+
+            const input = document.createElement('input');
+            input.type = originalOption.querySelector('input').type;
+            input.name = `option-${newQuest.id}`;
+            input.value = String.fromCharCode(index + 65);
+
+            const label = document.createElement('label');
+            label.textContent = String.fromCharCode(index + 65) + '.';
+
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.className = 'optionInput';
+            optionInput.value = originalOption.querySelector('.optionInput').value;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '删除';
+            deleteButton.className = 'deleteButton';
+
+            optionDiv.appendChild(input);
+            optionDiv.appendChild(label);
+            optionDiv.appendChild(optionInput);
+            optionDiv.appendChild(deleteButton);
+
+            newQuest.insertBefore(optionDiv, buttonDiv);
+
+            // 为当前题目下新添加的删除按钮添加点击事件监听器，点击时删除对应的选项盒子
+            deleteButton.addEventListener('click', function () {
+                const parentBox = this.parentNode;
+                parentBox.remove();
+            });
+        });
+
+        // 复制文本题必答状态
+        if (questionDiv.querySelector('.checkbox_div')) {
+            const originalCheckbox = questionDiv.querySelector('.checkbox_div input[type="checkbox"]');
+            const newCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
+            newCheckbox.checked = originalCheckbox.checked;
+        }
+
+        const containBox = document.querySelector('.contain');
+        containBox.insertBefore(newQuest, questionDiv.nextElementSibling);
+        setupQuestionButtons(newQuest, newTiHao);
+        updateQuestionNumbers();
+    });
+
+    // 为删除按钮添加点击事件
+    deleteButton.addEventListener('click', function () {
+        questionDiv.remove();
+        updateQuestionNumbers();
+    });
 }
 
-function addOption(questionDiv, isMultiple) {
-    const optionsContainer = questionDiv.querySelector('.options-container');
-    if (!optionsContainer) {
-        const container = document.createElement('div');
-        container.className = 'options-container';
-        questionDiv.insertBefore(container, questionDiv.querySelector('.ButtonDiv'));
-    }
+function addOption(questionDiv, inputType) {
+    // 获取该题目下已有的选项数量，根据数量确定下一个选项字母
+    const options = questionDiv.querySelectorAll(`input[type="${inputType}"]`);
 
-    const options = questionDiv.querySelectorAll('.optionDiv');
     const optionDiv = document.createElement('div');
     optionDiv.className = 'optionDiv';
 
-    const inputType = isMultiple ? 'checkbox' : 'radio';
-    const radio = document.createElement('input');
-    radio.type = inputType;
-    radio.name = `option-${questionDiv.id}`;
-    radio.value = String.fromCharCode(options.length + 65);
+    const input = document.createElement('input');
+    input.type = inputType;
+    input.name = `option-${questionDiv.id}`;
+    input.value = String.fromCharCode(options.length + 65);
 
     const label = document.createElement('label');
     label.textContent = String.fromCharCode(options.length + 65) + '.';
@@ -184,63 +256,44 @@ function addOption(questionDiv, isMultiple) {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '删除';
     deleteButton.className = 'deleteButton';
-    deleteButton.addEventListener('click', function () {
-        optionDiv.remove();
-    });
 
-    optionDiv.appendChild(radio);
+    optionDiv.appendChild(input);
     optionDiv.appendChild(label);
     optionDiv.appendChild(optionInput);
     optionDiv.appendChild(deleteButton);
-    optionsContainer.appendChild(optionDiv);
-}
 
-// 统一按钮事件处理
-function handleButtonEvents(questionDiv) {
-    const upMove = questionDiv.querySelector('.up');
-    const downMove = questionDiv.querySelector('.down');
-    const reuse = questionDiv.querySelector('.reuse');
-    const deleteButton = questionDiv.querySelector('.delete');
+    const buttonDiv = questionDiv.querySelector('.ButtonDiv');
+    questionDiv.insertBefore(optionDiv, buttonDiv);
 
-    upMove.addEventListener('click', function () {
-        const prevQuestion = questionDiv.previousElementSibling;
-        if (prevQuestion) {
-            containBox.insertBefore(questionDiv, prevQuestion);
-            if (prevQuestion.querySelector('.up')) {
-                prevQuestion.querySelector('.up').disabled = false;
-            }
-            reNumberQuestions();
-        }
-    });
-
-    downMove.addEventListener('click', function () {
-        const nextQuestion = questionDiv.nextElementSibling;
-        if (nextQuestion) {
-            containBox.insertBefore(nextQuestion, questionDiv);
-            reNumberQuestions();
-        }
-    });
-
-    reuse.addEventListener('click', function () {
-        const clonedQuest = questionDiv.cloneNode(true);
-        handleButtonEvents(clonedQuest);
-        clonedQuest.querySelectorAll('.optionDiv').forEach(option => {
-            option.querySelector('input').value = '';
-        });
-        containBox.insertBefore(clonedQuest, questionDiv.nextElementSibling);
-        reNumberQuestions();
-    });
-
+    // 为当前题目下新添加的删除按钮添加点击事件监听器，点击时删除对应的选项盒子
     deleteButton.addEventListener('click', function () {
-        questionDiv.remove();
-        reNumberQuestions();
+        const parentBox = this.parentNode;
+        parentBox.remove();
     });
 }
 
+function updateQuestionNumbers() {
+    const questions = document.querySelectorAll('.AllQuest');
+    questions.forEach((question, index) => {
+        const questionNumber = question.querySelector('.question-number');
+        questionNumber.textContent = `${index + 1}.`;
+        question.id = `question-${index + 1}`;
+        const upButton = question.querySelector('.up');
+        if (index === 0) {
+            upButton.disabled = true;
+        } else {
+            upButton.disabled = false;
+        }
+    });
+}
 
-//保存问卷
+function getNextQuestionNumber() {
+    const questions = document.querySelectorAll('.AllQuest');
+    return questions.length + 1;
+}
+
+// 保存问卷
 function saveQuestionnaire() {
-    // 问卷大题目
     const tittle = document.querySelector('.tittle').value;
     let questions = [];
 
@@ -260,7 +313,7 @@ function saveQuestionnaire() {
                 });
             });
         } else {
-            //获得此问题是否必答复选框状态
+            // 获得此问题是否必答复选框状态
             const mustAnswerCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
             const isMustAnswer = mustAnswerCheckbox? mustAnswerCheckbox.checked : false;
             questionOptions.push({
@@ -272,15 +325,12 @@ function saveQuestionnaire() {
             questionText: questionText,
             questionOptions
         });
-
     });
-
 
     if (!tittle || questions.length === 0) {
         showCustomAlert('问卷保存失败！请检查问卷/问题/选项是否为空');
         return;
     }
-
 
     const isoString = new Date();
     const chinaTime = new Date(isoString.getTime() - 8 * 60 * 60 * 1000);
@@ -295,18 +345,24 @@ function saveQuestionnaire() {
     const questionnaireData = {
         tittle: tittle,
         questions,
-        deadline: deadlineInput.value,
+        deadline: document.getElementById('deadline').value,
         savatime: formattedDate
     };
-    localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireData));
+
+    const originalTitle = JSON.parse(localStorage.getItem("editTittle"));
+    if (originalTitle) {
+        localStorage.removeItem(originalTitle);
+    }
+    localStorage.setItem(tittle, JSON.stringify(questionnaireData));
+    localStorage.setItem("editTittle", JSON.stringify(tittle));
     showCustomAlert('问卷已成功保存');
 }
 
-
-//当点击“发布问卷”时，如果截止日期早于当前日期或为空，则需要提示修改截止日期
+// 当点击“发布问卷”时，如果截止日期早于当前日期或为空，则需要提示修改截止日期
 function publishQuestionaire() {
     const tittle = document.querySelector('.tittle').value;
-    const deadline = deadlineInput.value;
+    const deadline = document.getElementById('deadline').value;
+    const currentDate = new Date().toISOString().split('T')[0];
     if (!deadline || deadline < currentDate) {
         showCustomAlert('问卷保存失败！截止日期不能早于当前日期或为空');
         return;
@@ -322,14 +378,14 @@ function publishQuestionaire() {
     const minutes = dateObj.getMinutes().toString().padStart(2, '0');
     const seconds = dateObj.getSeconds().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    const savedQuestionnaireData = localStorage.getItem(`${tittle}`);
+    const savedQuestionnaireData = localStorage.getItem(tittle);
     if (savedQuestionnaireData) {
         // 将获取到的JSON字符串解析为JavaScript对象
         const questionnaireObj = JSON.parse(savedQuestionnaireData);
         // 添加发布时间和发布状态属性到原对象
         questionnaireObj.publishTime = formattedDate;
         questionnaireObj.publishStatus = "发布中";
-        localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireObj));
+        localStorage.setItem(tittle, JSON.stringify(questionnaireObj));
         showCustomAlert('问卷已发布,状态为“发布中”！');
     }
     OK1.addEventListener('click', () => {
@@ -337,8 +393,7 @@ function publishQuestionaire() {
     });
 }
 
-
-//提示框
+// 提示框
 const CloseButton = document.getElementById('close');
 const OK1 = document.getElementById('OK');
 const Dialog = document.getElementById('custom-alert');
@@ -353,15 +408,4 @@ function showCustomAlert(message) {
         Dialog.close();
     });
     Dialog.showModal();
-}
-
-// 新增重新编号函数
-function reNumberQuestions() {
-    const questions = document.querySelectorAll('.AllQuest');
-    questions.forEach((question, index) => {
-        const questionNumber = index + 1;
-        question.querySelector('.Question').textContent = `${questionNumber}.`;
-    });
-    TiHao = questions.length; // 更新全局变量
-}
-    
+}    
