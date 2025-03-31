@@ -2,7 +2,8 @@ window.onload = function () {
     const t1 = localStorage.getItem("analyTittle");
     if (t1) {
         const t2 = JSON.parse(t1);
-        const historyAnswers = JSON.parse(localStorage.getItem('historyAnswers')) || [];
+        const historyAnswersKey = `historyAnswers_${t2}`;
+        const historyAnswers = JSON.parse(localStorage.getItem(historyAnswersKey)) || [];
         const savedQuestionnaireData = localStorage.getItem(t2);
 
         if (savedQuestionnaireData) {
@@ -34,7 +35,7 @@ window.onload = function () {
                     question.questionOptions?.forEach((option) => {
                         questionDiv.innerHTML += `<p>${optionLetter}. ${option.text}</p>`;
                         optionLabels.push(optionLetter);
-                        optionCounts[optionLetter] = 0; // 先初始化选项数量为 0
+                        optionCounts[optionLetter] = 0; // 初始化选项数量为 0
                         optionLetter = String.fromCharCode(optionLetter.charCodeAt(0) + 1);
                     });
                 }
@@ -144,7 +145,7 @@ window.onload = function () {
                             animateRotate: true,
                             animateScale: true
                         }
-                    }
+                    },
                 });
 
                 // **在条形图的每个条柱上方标注选项次数**
