@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="新建问卷.css">
+    <script src="新建问卷.js" defer></script>
+    <title>新建问卷</title>
+
+</head>
+
+<body>
+    <div class="header">
+        <a class="WenHao">?</a><a class="WenJuan1">问卷管理</a>
+        <div class="My-Questionnaire">
+            <a href="首页.html">我的问卷</a>
+        </div>
+    </div>
+
+    <div class="BaiKuang">
+        <input class="tittle" type="text" value="请在这里输入问卷的标题">
+        <div class="contain"></div>
+        <button class="addQuest">+添加问题</button>
+        <div class="QuestStyle" style="display: none">
+            <div class="TiMu">
+                <button class="Single"><img src="../img/radio.svg" alt="">单选题</button>
+                <button class="Duoxuan"><img src="../img/checkbox.svg" alt="">多选题</button>
+                <button class="Txt"><img src="../img/text.svg" alt="">文本题</button>
+            </div>
+            <button class="addQuest2">+添加问题</button>
+        </div>
+
+
+
+        <div class="data">
+            <label for="deadline">问卷截止日期</label>
+            <input type="date" id="deadline">
+            <button id="saveButton">保存问卷</button>
+            <button id="publishButton">发布问卷</button>
+        </div>
+
+        <dialog id="custom-alert">
+            
+            <div class="dialog1">
+                <h2>
+                    提示
+                </h2>
+                <button id="close">X</button>
+            </div>
+            <p id="message"></p>
+            <button id="OK">确定</button>
+
+        </dialog>
+    </div>
+</body>
+
+</html>
