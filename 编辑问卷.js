@@ -442,6 +442,9 @@ function publishQuestionaire() {
         localStorage.setItem(tittle, JSON.stringify(questionnaireObj));
         showCustomAlert('问卷已发布状态为“发布中”！');
     }
+    OK1.addEventListener('click', () => {
+        window.location.href = 'index.html';  // Redirect to index.html
+    });
 }
 
 // 提示框
