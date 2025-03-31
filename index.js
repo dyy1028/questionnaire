@@ -1,31 +1,26 @@
 window.onload = function () {
-    // 获取 localStorage 中所有的键
     const localStorageKeys = Object.keys(localStorage);
     const listContainer = document.getElementById('mylist');
     const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-    const selectAllText = document.querySelector('#selectAllText');  // 获取全选文字元素
+    const selectAllText = document.querySelector('#selectAllText');
     const deleteButton = document.querySelector('.delete-survey-button');
     const addQuestionnaireContainer2 = document.getElementById('addQuestionnaireContainer2');
 
-    // 过滤掉不需要处理的键
     const filteredKeys = localStorageKeys.filter(key => ![
         "analyButton", "editTittle", "historyAnswers", "publicTittle", "viewTittle", "writeButton", "writeTittle", "analyTittle", "editButton"
     ].includes(key));
 
-    let hasSurvey = false;  // 新增变量，用于标记是否有问卷
+    let hasSurvey = false;
 
-    // 遍历过滤后的键，生成问卷列表项
     filteredKeys.forEach(key => {
         const questionnaireData = localStorage.getItem(key);
         if (questionnaireData) {
-            // 简单检查是否是有效的 JSON 格式开头结尾
             if (questionnaireData.startsWith('{') && questionnaireData.endsWith('}')) {
                 try {
                     const parsedData = JSON.parse(questionnaireData);
-                    // 创建问卷列表项
                     const surveyListItem = createSurveyListItem(parsedData);
                     listContainer.appendChild(surveyListItem);
-                    hasSurvey = true;  // 如果有问卷，标记为 true
+                    hasSurvey = true;
                 } catch (e) {
                     console.error(`Error parsing data for key: ${key}. Invalid JSON format.`, e);
                 }
@@ -35,7 +30,6 @@ window.onload = function () {
         }
     });
 
-    // 根据是否有问卷来决定是否显示全选按钮、全选文字和删除按钮
     if (!hasSurvey) {
         selectAllCheckbox.style.display = 'none';
         selectAllText.style.display = 'none';
@@ -45,65 +39,53 @@ window.onload = function () {
         addQuestionnaireContainer2.style.display = 'none';
     }
 
-    // 为各个操作按钮添加事件监听器
     setupButtonEvents();
-
-    // 处理删除按钮点击事件
     setupDeleteButton();
-
-    // 处理全选复选框点击事件
     setupSelectAllCheckbox();
 };
+
+function formatDate(dateString) {
+    if (!dateString) return "";
+    return dateString.split(" ")[0];
+}
 
 // 创建问卷列表项的函数
 function createSurveyListItem(parsedData) {
     const surveyListItem = document.createElement('li');
-
-    // 复选框
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.classList.add('survey-checkbox');
     surveyListItem.appendChild(checkbox);
 
-    // 问卷标题
     const surveyTitleElement = document.createElement('div');
     surveyTitleElement.classList.add('survey-create-title');
     surveyTitleElement.innerText = parsedData.tittle;
     surveyListItem.appendChild(surveyTitleElement);
 
-    // 创建时间
     const surveyCreateTimeElement = document.createElement('div');
     surveyCreateTimeElement.classList.add('survey-create-time');
-    surveyCreateTimeElement.innerText = parsedData.savatime;
+    surveyCreateTimeElement.innerText = formatDate(parsedData.savatime);
     surveyListItem.appendChild(surveyCreateTimeElement);
 
-    // 发布时间
-    const publishTime = parsedData.publishTime;
-    if (publishTime && publishTime.trim()!== "") {
+    if (parsedData.publishTime && parsedData.publishTime.trim() !== "") {
         const surveyPublishTimeElement = document.createElement('div');
         surveyPublishTimeElement.classList.add('survey-publish-time');
-        surveyPublishTimeElement.innerText = publishTime;
+        surveyPublishTimeElement.innerText = formatDate(parsedData.publishTime);
         surveyListItem.appendChild(surveyPublishTimeElement);
     }
 
-    // 截止时间
-    const deadline = parsedData.deadline;
-    if (deadline && deadline.trim()!== "") {
+    if (parsedData.deadline && parsedData.deadline.trim() !== "") {
         const surveyDeadlineElement = document.createElement('div');
         surveyDeadlineElement.classList.add('survey-deadline');
-        surveyDeadlineElement.innerText = deadline;
+        surveyDeadlineElement.innerText = parsedData.deadline;
         surveyListItem.appendChild(surveyDeadlineElement);
     }
-    // 发布状态
+
     const surveyPublishElement = document.createElement('div');
     surveyPublishElement.classList.add('survey-publish-status');
-    surveyPublishElement.innerText = parsedData.publishStatus? parsedData.publishStatus : '未发布';
+    surveyPublishElement.innerText = parsedData.publishStatus ? parsedData.publishStatus : '未发布';
     surveyListItem.appendChild(surveyPublishElement);
 
-   
-    
-
-    // 操作按钮
     const buttonContainer = document.createElement('div');
     buttonContainer.id = 'buttonContainer';
     createFunctionButtons(buttonContainer, parsedData.tittle);
@@ -111,6 +93,7 @@ function createSurveyListItem(parsedData) {
 
     return surveyListItem;
 }
+
 
 // 为各个操作按钮添加事件监听器
 function setupButtonEvents() {
