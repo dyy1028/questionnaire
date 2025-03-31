@@ -28,9 +28,11 @@ window.onload = function () {
             const isRequired = questionType === 'inputText' && question.questionOptions[0].isMustAnswer;
 
             questionDetails += `<p>${index + 1}.<strong>${questionText}</strong>`;
+
             if (isRequired) {
-                questionDetails += '<span style="color: red;">*</span>';
+                questionDetails += '<span class="required-label" style="color: red; margin-left: 10px;">[必答]</span>';
             }
+
             questionDetails += '</p>';
 
             if (questionType === 'singleChoice') {
@@ -48,7 +50,7 @@ window.onload = function () {
                 });
                 questionDetails += '<br>';
             } else {
-                questionDetails += `<textarea rows="1" cols="100" data-question="${index + 1}" ${isRequired? 'required' : ''}></textarea><br>`;
+                questionDetails += `<textarea rows="1" cols="100" class="text-answer" data-question="${index + 1}" ${isRequired ? 'required' : ''}></textarea><br>`;
             }
         });
         container.innerHTML = questionDetails;
@@ -81,21 +83,17 @@ window.onload = function () {
             questions.forEach((question, index) => {
                 const questionType = question.type;
                 const isRequired = questionType === 'inputText' && question.questionOptions[0].isMustAnswer;
+                
                 if (questionType === 'singleChoice') {
                     const selectedOption = document.querySelector(`.radio-option[data-question='${index + 1}'][style*='lightblue']`);
                     answerMap[index + 1] = selectedOption ? String.fromCharCode(65 + parseInt(selectedOption.getAttribute('data-option'))) : "未作答";
-                    if (isRequired && answerMap[index + 1] === "未作答") {
-                        allRequiredAnswered = false;
-                    }
                 } else if (questionType === 'multipleChoice') {
                     const selectedOptions = Array.from(document.querySelectorAll(`.checkbox-option[data-question='${index + 1}'][style*='lightblue']`));
                     answerMap[index + 1] = selectedOptions.length ? selectedOptions.map(btn => String.fromCharCode(65 + parseInt(btn.getAttribute('data-option')))).join(',') : "未作答";
-                    if (isRequired && answerMap[index + 1] === "未作答") {
-                        allRequiredAnswered = false;
-                    }
                 } else {
                     const textarea = document.querySelector(`textarea[data-question='${index + 1}']`);
                     answerMap[index + 1] = textarea.value.trim() || "未作答";
+
                     if (isRequired && answerMap[index + 1] === "未作答") {
                         allRequiredAnswered = false;
                     }
@@ -111,15 +109,20 @@ window.onload = function () {
             historyAnswers.push(answerMap);
             localStorage.setItem(`historyAnswers_${questionnaireTitle}`, JSON.stringify(historyAnswers));
 
-            showCustomAlert('问卷提交成功！');
+            showCustomAlert('问卷提交成功！', () => {
+                window.location.href = "index.html";
+            });
         });
     }
 
-    function showCustomAlert(message) {
+    function showCustomAlert(message, callback) {
         const Dialog = document.getElementById('custom-alert');
         document.getElementById('message').textContent = message;
         document.getElementById('close').addEventListener('click', () => Dialog.close());
-        document.getElementById('OK').addEventListener('click', () => Dialog.close());
+        document.getElementById('OK').addEventListener('click', () => {
+            Dialog.close();
+            if (callback) callback();
+        });
         Dialog.showModal();
     }
-};    
+};
