@@ -119,6 +119,9 @@ window.onload = function () {
                 }
 
                 showCustomAlert('问卷已发布，状态为“发布中”！');
+                OK1.addEventListener('click', () => {
+                    window.location.href = "index.html";
+                });
             }
         } else {
             console.log('未找到保存的问卷数据');
