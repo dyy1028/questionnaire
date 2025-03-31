@@ -84,7 +84,7 @@ window.onload = function () {
             }
 
             function publishQuestionaire() {
-                const titleElement = document.querySelector('.tittle h2');  // 确保获取的是标题文本
+                const titleElement = document.querySelector('.tittle h2');
                 const tittle = titleElement ? titleElement.innerText : null;
                 const deadline = deadlineInput.value;
                 
@@ -112,6 +112,7 @@ window.onload = function () {
                     const questionnaireObj = JSON.parse(savedQuestionnaireData);
                     questionnaireObj.publishTime = formattedDate;
                     questionnaireObj.publishStatus = "发布中";
+                    questionnaireObj.deadline = deadline; // 存储截止日期
 
                     // 更新本地存储
                     localStorage.setItem(tittle, JSON.stringify(questionnaireObj));
