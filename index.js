@@ -77,11 +77,31 @@ function createSurveyListItem(parsedData) {
     surveyCreateTimeElement.innerText = parsedData.savatime;
     surveyListItem.appendChild(surveyCreateTimeElement);
 
+    // 发布时间
+    const publishTime = parsedData.publishTime;
+    if (publishTime && publishTime.trim()!== "") {
+        const surveyPublishTimeElement = document.createElement('div');
+        surveyPublishTimeElement.classList.add('survey-publish-time');
+        surveyPublishTimeElement.innerText = publishTime;
+        surveyListItem.appendChild(surveyPublishTimeElement);
+    }
+
+    // 截止时间
+    const deadline = parsedData.deadline;
+    if (deadline && deadline.trim()!== "") {
+        const surveyDeadlineElement = document.createElement('div');
+        surveyDeadlineElement.classList.add('survey-deadline');
+        surveyDeadlineElement.innerText = deadline;
+        surveyListItem.appendChild(surveyDeadlineElement);
+    }
     // 发布状态
     const surveyPublishElement = document.createElement('div');
     surveyPublishElement.classList.add('survey-publish-status');
     surveyPublishElement.innerText = parsedData.publishStatus? parsedData.publishStatus : '未发布';
     surveyListItem.appendChild(surveyPublishElement);
+
+   
+    
 
     // 操作按钮
     const buttonContainer = document.createElement('div');
