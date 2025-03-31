@@ -13,7 +13,7 @@ window.onload = function () {
             titleElement.innerHTML = `<h2>${title}</h2>`;
             renderQuestions(questions, questionContainer);
             setupQuestionEvents();
-            setupSubmitButton(questions);
+            setupSubmitButton(t2, questions);
         } else {
             console.log('未找到保存的问卷数据');
         }
@@ -72,7 +72,7 @@ window.onload = function () {
         });
     }
 
-    function setupSubmitButton(questions) {
+    function setupSubmitButton(questionnaireTitle, questions) {
         const submitButton = document.getElementById('submitButton');
         submitButton.addEventListener('click', function () {
             const answerMap = {};
@@ -107,9 +107,9 @@ window.onload = function () {
                 return;
             }
 
-            let historyAnswers = JSON.parse(localStorage.getItem('historyAnswers')) || [];
+            let historyAnswers = JSON.parse(localStorage.getItem(`historyAnswers_${questionnaireTitle}`)) || [];
             historyAnswers.push(answerMap);
-            localStorage.setItem('historyAnswers', JSON.stringify(historyAnswers));
+            localStorage.setItem(`historyAnswers_${questionnaireTitle}`, JSON.stringify(historyAnswers));
 
             showCustomAlert('问卷提交成功！');
         });
