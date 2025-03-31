@@ -1,74 +1,120 @@
-const inputBox = document.querySelector('.tittle');
+window.onload = function () {
+    // 获取保存的编辑问卷标题
+    const editTitle = localStorage.getItem("editTittle");
+    if (editTitle) {
+        const title = JSON.parse(editTitle);
+        const questionnaireData = localStorage.getItem(title);
+        if (questionnaireData) {
+            const questionnaireObj = JSON.parse(questionnaireData);
+            // 填充问卷标题
+            const inputBox = document.querySelector('.tittle');
+            inputBox.value = questionnaireObj.tittle;
 
-// 点击事件  
-inputBox.addEventListener('click', function () {
-    // 改变背景颜色  
-    inputBox.style.backgroundColor = 'yellow'; // 可以根据需要选择其它颜色  
-});
+            // 填充截止日期
+            const deadlineInput = document.getElementById('deadline');
+            deadlineInput.value = questionnaireObj.deadline;
 
-// 可以选择在失去焦点时恢复背景颜色  
-inputBox.addEventListener('blur', function () {
-    inputBox.style.backgroundColor = 'rgb(208, 233, 204)'; // 恢复默认背景颜色  
-});
-const addButton = document.querySelector('.addQuest');
-const QuestStyle = document.querySelector('.QuestStyle');
-addButton.addEventListener('click', function () {
-    //添加问题的按钮被点击时题目类型弹出来
-    addButton.style.display = 'none';
-    QuestStyle.style.display = 'flex';
-});
+            // 填充题目
+            const containBox = document.querySelector('.contain');
+            containBox.innerHTML = '';
+            let TiHao = 0;
+            questionnaireObj.questions.forEach((question) => {
+                TiHao++;
+                const newQuest = createQuestion(TiHao, question.type);
+                const inputTiMu = newQuest.querySelector('.inputTiMu');
+                inputTiMu.value = question.questionText;
 
+                if (question.type === 'inputText') {
+                    const mustAnswerCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
+                    const isMustAnswer = question.questionOptions[0].isMustAnswer;
+                    mustAnswerCheckbox.checked = isMustAnswer;
+                    const answerText = newQuest.querySelector('.answerText');
+                    answerText.required = isMustAnswer;
+                } else {
+                    const add = newQuest.querySelector('.addOption');
+                    add.addEventListener('click', function () {
+                        addOption(newQuest, question.type ==='singleChoice'? 'radio' : 'checkbox');
+                    });
+                    question.questionOptions.forEach((option) => {
+                        addOption(newQuest, question.type ==='singleChoice'? 'radio' : 'checkbox');
+                        const optionInputs = newQuest.querySelectorAll('.optionInput');
+                        const lastOptionInput = optionInputs[optionInputs.length - 1];
+                        lastOptionInput.value = option.text;
+                    });
+                }
 
-//截止日期和发布按钮
-const deadlineInput = document.getElementById('deadline');
-const publishButton = document.getElementById('publishButton');
-const currentDate = new Date().toISOString().split('T')[0];
-deadlineInput.setAttribute('min', currentDate);
+                setupQuestionButtons(newQuest, TiHao);
+                containBox.appendChild(newQuest);
+            });
+        }
+    }
 
-//保存按钮
-const saveButton = document.getElementById('saveButton');
-saveButton.addEventListener('click', saveQuestionnaire);
-publishButton.addEventListener('click', publishQuestionaire);
-
-
-let TiHao = 0; //记录题号
-//当单选题按钮被点击
-const containBox = document.querySelector('.contain');
-const SingleButton = document.querySelector('.Single');
-
-// 为添加单选题按钮添加点击事件监听器
-SingleButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion(TiHao, 'singleChoice');
-    const add = newQuest.querySelector('.addOption');
-    add.addEventListener('click', function () {
-        addOption(newQuest, 'radio');
+    // 点击事件，改变标题输入框背景颜色
+    const inputBox = document.querySelector('.tittle');
+    inputBox.addEventListener('click', function () {
+        inputBox.style.backgroundColor = 'yellow';
     });
-    setupQuestionButtons(newQuest, TiHao);
-    containBox.appendChild(newQuest);
-});
-
-//当多选题按钮被点击
-const DuoButton = document.querySelector('.Duoxuan');
-DuoButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion(TiHao, 'multipleChoice');
-    const add = newQuest.querySelector('.addOption');
-    add.addEventListener('click', function () {
-        addOption(newQuest, 'checkbox');
+    inputBox.addEventListener('blur', function () {
+        inputBox.style.backgroundColor = 'rgb(208, 233, 204)';
     });
-    setupQuestionButtons(newQuest, TiHao);
-    containBox.appendChild(newQuest);
-});
 
-//当文本题按钮被点击
-const TxtButton = document.querySelector('.Txt');
-TxtButton.addEventListener('click', function () {
-    TiHao++;
-    const newQuest = createQuestion(TiHao, 'inputText');
-    setupQuestionButtons(newQuest, TiHao);
-    containBox.appendChild(newQuest);
-});
+    // 添加问题按钮点击事件
+    const addButton = document.querySelector('.addQuest');
+    const QuestStyle = document.querySelector('.QuestStyle');
+    addButton.addEventListener('click', function () {
+        addButton.style.display = 'none';
+        QuestStyle.style.display = 'flex';
+    });
+
+    // 截止日期和发布按钮
+    const deadlineInput = document.getElementById('deadline');
+    const publishButton = document.getElementById('publishButton');
+    const currentDate = new Date().toISOString().split('T')[0];
+    deadlineInput.setAttribute('min', currentDate);
+
+    // 保存按钮
+    const saveButton = document.getElementById('saveButton');
+    saveButton.addEventListener('click', saveQuestionnaire);
+    publishButton.addEventListener('click', publishQuestionaire);
+
+    // 当单选题按钮被点击
+    const SingleButton = document.querySelector('.Single');
+    SingleButton.addEventListener('click', function () {
+        const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+        const newQuest = createQuestion(TiHao, 'singleChoice');
+        const add = newQuest.querySelector('.addOption');
+        add.addEventListener('click', function () {
+            addOption(newQuest, 'radio');
+        });
+        setupQuestionButtons(newQuest, TiHao);
+        const containBox = document.querySelector('.contain');
+        containBox.appendChild(newQuest);
+    });
+
+    // 当多选题按钮被点击
+    const DuoButton = document.querySelector('.Duoxuan');
+    DuoButton.addEventListener('click', function () {
+        const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+        const newQuest = createQuestion(TiHao, 'multipleChoice');
+        const add = newQuest.querySelector('.addOption');
+        add.addEventListener('click', function () {
+            addOption(newQuest, 'checkbox');
+        });
+        setupQuestionButtons(newQuest, TiHao);
+        const containBox = document.querySelector('.contain');
+        containBox.appendChild(newQuest);
+    });
+
+    // 当文本题按钮被点击
+    const TxtButton = document.querySelector('.Txt');
+    TxtButton.addEventListener('click', function () {
+        const TiHao = document.querySelectorAll('.AllQuest').length + 1;
+        const newQuest = createQuestion(TiHao, 'inputText');
+        setupQuestionButtons(newQuest, TiHao);
+        const containBox = document.querySelector('.contain');
+        containBox.appendChild(newQuest);
+    });
+};
 
 function createQuestion(tihao, questionType) {
     const newQuest = document.createElement('div');
@@ -100,7 +146,7 @@ function createQuestion(tihao, questionType) {
         const checkbox = document.createElement('div');
         checkbox.className = 'checkbox_div';
 
-        //此题是否必答
+        // 此题是否必答
         const MustInput = document.createElement('input');
         MustInput.type = 'checkbox';
         const label = document.createElement('label');
@@ -127,7 +173,7 @@ function createQuestion(tihao, questionType) {
 }
 
 function setupQuestionButtons(questionDiv, tihao) {
-    //创建上移、下移、复用、删除按钮
+    // 创建上移、下移、复用、删除按钮
     const ButtonDiv = document.createElement('div');
     ButtonDiv.className = 'ButtonDiv';
 
@@ -160,6 +206,7 @@ function setupQuestionButtons(questionDiv, tihao) {
     upMove.addEventListener('click', function () {
         const prevQuestion = questionDiv.previousElementSibling;
         if (prevQuestion) {
+            const containBox = document.querySelector('.contain');
             containBox.insertBefore(questionDiv, prevQuestion);
             updateQuestionNumbers();
         }
@@ -169,6 +216,7 @@ function setupQuestionButtons(questionDiv, tihao) {
     downMove.addEventListener('click', function () {
         const nextQuestion = questionDiv.nextElementSibling;
         if (nextQuestion) {
+            const containBox = document.querySelector('.contain');
             containBox.insertBefore(nextQuestion, questionDiv);
             updateQuestionNumbers();
         }
@@ -227,6 +275,7 @@ function setupQuestionButtons(questionDiv, tihao) {
             newCheckbox.checked = originalCheckbox.checked;
         }
 
+        const containBox = document.querySelector('.contain');
         containBox.insertBefore(newQuest, questionDiv.nextElementSibling);
         setupQuestionButtons(newQuest, newTiHao);
         updateQuestionNumbers();
@@ -290,7 +339,6 @@ function updateQuestionNumbers() {
             upButton.disabled = false;
         }
     });
-    TiHao = questions.length;
 }
 
 function getNextQuestionNumber() {
@@ -298,9 +346,8 @@ function getNextQuestionNumber() {
     return questions.length + 1;
 }
 
-//保存问卷
+// 保存问卷
 function saveQuestionnaire() {
-    // 问卷大题目
     const tittle = document.querySelector('.tittle').value;
     let questions = [];
 
@@ -320,7 +367,7 @@ function saveQuestionnaire() {
                 });
             });
         } else {
-            //获得此问题是否必答复选框状态
+            // 获得此问题是否必答复选框状态
             const mustAnswerCheckbox = newQuest.querySelector('.checkbox_div input[type="checkbox"]');
             const isMustAnswer = mustAnswerCheckbox? mustAnswerCheckbox.checked : false;
             questionOptions.push({
@@ -332,15 +379,12 @@ function saveQuestionnaire() {
             questionText: questionText,
             questionOptions
         });
-
     });
-
 
     if (!tittle || questions.length === 0) {
         showCustomAlert('问卷保存失败！请检查问卷/问题/选项是否为空');
         return;
     }
-
 
     const isoString = new Date();
     const chinaTime = new Date(isoString.getTime() - 8 * 60 * 60 * 1000);
@@ -355,18 +399,24 @@ function saveQuestionnaire() {
     const questionnaireData = {
         tittle: tittle,
         questions,
-        deadline: deadlineInput.value,
+        deadline: document.getElementById('deadline').value,
         savatime: formattedDate
     };
-    localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireData));
+
+    const originalTitle = JSON.parse(localStorage.getItem("editTittle"));
+    if (originalTitle) {
+        localStorage.removeItem(originalTitle);
+    }
+    localStorage.setItem(tittle, JSON.stringify(questionnaireData));
+    localStorage.setItem("editTittle", JSON.stringify(tittle));
     showCustomAlert('问卷已成功保存');
 }
 
-
-//当点击“发布问卷”时，如果截止日期早于当前日期或为空，则需要提示修改截止日期
+// 当点击“发布问卷”时，如果截止日期早于当前日期或为空，则需要提示修改截止日期
 function publishQuestionaire() {
     const tittle = document.querySelector('.tittle').value;
-    const deadline = deadlineInput.value;
+    const deadline = document.getElementById('deadline').value;
+    const currentDate = new Date().toISOString().split('T')[0];
     if (!deadline || deadline < currentDate) {
         showCustomAlert('问卷保存失败！截止日期不能早于当前日期或为空');
         return;
@@ -382,20 +432,19 @@ function publishQuestionaire() {
     const minutes = dateObj.getMinutes().toString().padStart(2, '0');
     const seconds = dateObj.getSeconds().toString().padStart(2, '0');
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    const savedQuestionnaireData = localStorage.getItem(`${tittle}`);
+    const savedQuestionnaireData = localStorage.getItem(tittle);
     if (savedQuestionnaireData) {
         // 将获取到的JSON字符串解析为JavaScript对象
         const questionnaireObj = JSON.parse(savedQuestionnaireData);
         // 添加发布时间和发布状态属性到原对象
         questionnaireObj.publishTime = formattedDate;
         questionnaireObj.publishStatus = "发布中";
-        localStorage.setItem(`${tittle}`, JSON.stringify(questionnaireObj));
+        localStorage.setItem(tittle, JSON.stringify(questionnaireObj));
         showCustomAlert('问卷已发布状态为“发布中”！');
     }
 }
 
-
-//提示框
+// 提示框
 const CloseButton = document.getElementById('close');
 const OK1 = document.getElementById('OK');
 const Dialog = document.getElementById('custom-alert');
@@ -407,11 +456,6 @@ function showCustomAlert(message) {
         Dialog.close();
     });
     OK1.addEventListener('click', () => {
-        const successMessages = ['问卷已成功保存', '问卷已发布状态为“发布中”！'];
-        if (successMessages.includes(Message.textContent.trim())) {
-            const homePageUrl = 'index.html'; // 请将 'index.html' 替换为实际的首页 URL
-            window.location.href = homePageUrl;
-        }
         Dialog.close();
     });
     Dialog.showModal();
